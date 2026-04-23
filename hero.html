@@ -1,0 +1,1998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#04060F">
+<title>Paranchi's Documents</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root{
+  --bg:#04060F;
+  --bg2:#070B18;
+  --surface:#0A1020;
+  --card:#0C1428;
+  --card2:#101830;
+  --navy:#060A1A;
+  --accent:#4A7AE8;
+  --accent2:#7B5EE8;
+  --gold:#C8900A;
+  --gold2:#F0B830;
+  --glow1:rgba(74,122,232,.2);
+  --glow2:rgba(123,94,232,.15);
+  --glow3:rgba(200,144,10,.12);
+  --border:rgba(74,122,232,.14);
+  --border2:rgba(123,94,232,.1);
+  --text:#C8D8F8;
+  --text2:#E8F0FF;
+  --sub:#4A6898;
+  --hint:#243858;
+  --red:#E84060;
+  --inset:env(safe-area-inset-top,0px);
+  --binset:env(safe-area-inset-bottom,0px);
+}
+
+/* ── LIGHT THEME ── */
+body.light{
+  --bg:#F5EEE8;
+  --bg2:#EDE6DF;
+  --surface:#F9F4F0;
+  --card:#FFFFFF;
+  --card2:#F3ECE6;
+  --navy:#EDE6DF;
+  --accent:#8B1A3A;
+  --accent2:#6B1230;
+  --gold:#8B1A3A;
+  --gold2:#B02248;
+  --glow1:rgba(139,26,58,.12);
+  --glow2:rgba(107,18,48,.1);
+  --glow3:rgba(139,26,58,.07);
+  --border:rgba(139,26,58,.15);
+  --border2:rgba(107,18,48,.1);
+  --text:#3A1020;
+  --text2:#2A0C18;
+  --sub:#8B4060;
+  --hint:#BCA0AA;
+  --red:#C8002A;
+  --inset:env(safe-area-inset-top,0px);
+  --binset:env(safe-area-inset-bottom,0px);
+}
+body.light::before{
+  background:
+    radial-gradient(ellipse 70% 45% at 15% 8%,rgba(139,26,58,.06) 0%,transparent 65%),
+    radial-gradient(ellipse 55% 40% at 85% 85%,rgba(107,18,48,.05) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 50% at 50% 50%,rgba(180,60,90,.03) 0%,transparent 70%);
+}
+body.light #pdfScreen{background:#EDE6DF !important;}
+body.light #pdfWrap{background:#E5DDD6 !important;}
+body.light .topbar,body.light .vbar,body.light .ibar{
+  background:rgba(245,238,232,.97) !important;
+}
+body.light .sbox{background:rgba(255,255,255,.9);}
+body.light .sbox input{color:var(--text2);}
+body.light .footer{background:rgba(245,238,232,.8);}
+body.light #stars{opacity:.12;}
+body.light .splash-orb1,body.light .splash-orb2,body.light .splash-orb3{display:none;}
+*{box-sizing:border-box;margin:0;padding:0;
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;-webkit-user-select:none;}
+html,body{width:100%;height:100%;overflow:hidden;
+  background:var(--bg);color:var(--text);
+  font-family:'Inter',sans-serif;
+  -webkit-font-smoothing:antialiased;}
+
+/* ── Mystical BG ── */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 45% at 15% 8%,rgba(74,122,232,.09) 0%,transparent 65%),
+    radial-gradient(ellipse 55% 40% at 85% 85%,rgba(123,94,232,.07) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 50% at 50% 50%,rgba(200,144,10,.03) 0%,transparent 70%);
+}
+
+/* ── Stars canvas ── */
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none;}
+
+/* ── App shell ── */
+#app{position:relative;width:100%;height:100dvh;overflow:hidden;z-index:1;}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;
+  opacity:0;pointer-events:none;transition:opacity .22s ease;overflow:hidden;}
+.screen.active{opacity:1;pointer-events:all;}
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;overscroll-behavior:contain;}
+.scroll::-webkit-scrollbar{display:none;}
+
+/* ═══════════════════════
+   SPLASH SCREEN
+═══════════════════════ */
+#splash{
+  position:fixed;inset:0;z-index:9999;
+  background:radial-gradient(ellipse at 50% 40%,#0C1440 0%,#04060F 65%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:0;overflow:hidden;
+}
+#splash.hiding{animation:splashOut .8s ease forwards;}
+@keyframes splashOut{to{opacity:0;transform:scale(1.05);}}
+
+/* Stars in splash */
+.splash-stars{position:absolute;inset:0;overflow:hidden;}
+.ss{position:absolute;border-radius:50%;background:#fff;
+  animation:ssTw var(--d) var(--dl) infinite;}
+@keyframes ssTw{0%,100%{opacity:var(--a);}50%{opacity:var(--b);transform:scale(1.6);}}
+
+/* Glow orbs */
+.splash-orb1{
+  position:absolute;width:300px;height:300px;border-radius:50%;
+  background:radial-gradient(circle,rgba(74,122,232,.18) 0%,transparent 70%);
+  top:10%;left:-50px;animation:orbFloat 6s ease-in-out infinite;
+}
+.splash-orb2{
+  position:absolute;width:250px;height:250px;border-radius:50%;
+  background:radial-gradient(circle,rgba(123,94,232,.14) 0%,transparent 70%);
+  bottom:15%;right:-40px;animation:orbFloat 8s ease-in-out infinite reverse;
+}
+.splash-orb3{
+  position:absolute;width:180px;height:180px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,144,10,.08) 0%,transparent 70%);
+  top:45%;left:30%;animation:orbFloat 7s ease-in-out infinite 2s;
+}
+@keyframes orbFloat{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-25px) scale(1.08);}}
+
+/* Logo */
+.splash-logo{
+  font-size:80px;
+  filter:drop-shadow(0 0 30px rgba(74,122,232,.6)) drop-shadow(0 0 60px rgba(123,94,232,.4));
+  animation:logoGlow 2.5s ease-in-out infinite,splashFadeIn .8s ease .1s both;
+  position:relative;z-index:1;margin-bottom:20px;
+}
+@keyframes logoGlow{
+  0%,100%{filter:drop-shadow(0 0 20px rgba(74,122,232,.5)) drop-shadow(0 0 40px rgba(123,94,232,.3));}
+  50%{filter:drop-shadow(0 0 40px rgba(74,122,232,.9)) drop-shadow(0 0 80px rgba(123,94,232,.6)) drop-shadow(0 0 120px rgba(200,144,10,.3));}
+}
+@keyframes splashFadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;}}
+
+/* App name */
+.splash-name{
+  font-family:'Cinzel',serif;font-size:26px;font-weight:700;
+  text-align:center;line-height:1.25;letter-spacing:1px;
+  background:linear-gradient(135deg,#C8D8FF 0%,#A888FF 45%,#F0B830 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 20px rgba(74,122,232,.4));
+  animation:splashFadeIn .8s ease .3s both;
+  position:relative;z-index:1;margin-bottom:8px;
+}
+.splash-sub{
+  font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--hint);
+  animation:splashFadeIn .8s ease .5s both;position:relative;z-index:1;
+  margin-bottom:32px;
+}
+
+/* Divider line */
+.splash-line{
+  width:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--accent),var(--accent2),transparent);
+  animation:lineGrow 1s ease .6s forwards;
+  position:relative;z-index:1;margin-bottom:32px;
+}
+@keyframes lineGrow{to{width:180px;}}
+
+/* Made by */
+.splash-made{
+  font-size:12px;color:var(--sub);letter-spacing:.5px;
+  animation:splashFadeIn .8s ease .8s both;position:relative;z-index:1;
+  margin-bottom:32px;
+}
+.splash-made span{
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  font-weight:600;
+}
+
+/* Progress bar */
+.splash-progress{
+  width:200px;height:2px;background:rgba(74,122,232,.12);
+  border-radius:2px;overflow:hidden;position:relative;z-index:1;
+}
+.splash-progress-fill{
+  height:100%;width:0;border-radius:2px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2),var(--gold2));
+  animation:progressFill 2.8s ease .5s forwards;
+}
+@keyframes progressFill{0%{width:0;}60%{width:75%;}100%{width:100%;}}
+
+/* ═══════════════════════
+   TOP BAR
+═══════════════════════ */
+.topbar{
+  flex-shrink:0;z-index:2;
+  background:rgba(4,6,15,.96);
+  padding:calc(11px + var(--inset)) 14px 11px;
+  display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+.topbar::after{
+  content:'';position:absolute;bottom:0;left:12%;right:12%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--accent),var(--accent2),transparent);
+  opacity:.3;
+}
+.tb-left{flex:1;min-width:0;}
+.eyebrow{
+  font-size:9px;letter-spacing:3px;color:var(--hint);
+  text-transform:uppercase;font-family:'Inter',sans-serif;
+}
+.appname{
+  font-family:'Cinzel',serif;font-size:17px;font-weight:700;
+  line-height:1.2;letter-spacing:.3px;
+  background:linear-gradient(135deg,#C8D8FF 0%,#A888FF 50%,#F0B830 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  display:inline-block;
+}
+.tb-btn{
+  width:40px;height:40px;border-radius:50%;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  font-size:22px;font-family:sans-serif;transition:transform .12s,opacity .12s;
+}
+.tb-btn:active{transform:scale(.84);}
+.btn-back{
+  background:rgba(74,122,232,.12);color:var(--text);font-size:26px;
+  border:1px solid var(--border);
+}
+.btn-add{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff;font-size:24px;
+  box-shadow:0 0 20px var(--glow1),0 0 10px var(--glow2);
+}
+
+/* ═══════════════════════
+   SEARCH BOX
+═══════════════════════ */
+.search-wrap{flex-shrink:0;padding:10px 13px 6px;}
+.sbox{
+  display:flex;align-items:center;gap:9px;
+  background:rgba(10,16,32,.9);border:1.5px solid var(--border);
+  border-radius:14px;padding:10px 14px;transition:border-color .2s;
+}
+.sbox:focus-within{border-color:rgba(74,122,232,.5);}
+.sbox svg{flex-shrink:0;}
+.sbox input{
+  flex:1;background:none;border:none;outline:none;
+  color:var(--text2);font-size:14px;font-family:'Inter',sans-serif;
+  user-select:text;-webkit-user-select:text;
+}
+.sbox input::placeholder{color:var(--hint);}
+.sclr{background:none;border:none;color:var(--hint);font-size:20px;
+  cursor:pointer;line-height:1;display:none;padding:0 2px;}
+.sclr.on{display:block;}
+
+/* ═══════════════════════
+   GLOBAL SEARCH RESULTS
+═══════════════════════ */
+#gResults{display:none;padding:6px 12px 20px;}
+#gResults.on{display:block;}
+.gr-lbl{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--sub);padding:6px 2px 10px;}
+.gr-item{
+  display:flex;align-items:center;gap:12px;
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:14px;padding:11px 13px;margin-bottom:8px;
+  cursor:pointer;transition:transform .1s;
+}
+.gr-item:active{transform:scale(.97);}
+.gr-th{
+  width:40px;height:40px;border-radius:10px;
+  background:var(--card2);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;overflow:hidden;
+}
+.gr-th img{width:100%;height:100%;object-fit:cover;border-radius:10px;}
+.gr-inf{flex:1;min-width:0;}
+.gr-nm{font-size:13px;font-weight:600;color:var(--text2);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.gr-mt{font-size:11px;color:var(--hint);margin-top:2px;}
+.gr-bd{
+  font-size:9px;font-weight:700;letter-spacing:.8px;padding:2px 7px;
+  border-radius:6px;color:#fff;flex-shrink:0;
+}
+.gbd-pdf{background:rgba(232,64,96,.8);}
+.gbd-img{background:rgba(74,122,232,.8);}
+.gr-empty{text-align:center;padding:40px 20px;color:var(--hint);font-size:14px;}
+
+/* ═══════════════════════
+   FOLDER SECTION
+═══════════════════════ */
+.sec-lbl{
+  padding:14px 15px 8px;font-size:10px;font-weight:700;
+  letter-spacing:2.5px;text-transform:uppercase;color:var(--sub);
+}
+#folderGrid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:12px;padding:4px 12px 14px;
+}
+.fc{
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:22px;padding:17px 13px 15px;cursor:pointer;
+  position:relative;animation:fadeUp .3s ease both;transition:transform .12s;
+  box-shadow:0 4px 24px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.03);
+}
+.fc:active{transform:scale(.93);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+.fi{
+  width:50px;height:50px;border-radius:15px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;margin-bottom:11px;
+}
+.fn{font-size:13px;font-weight:600;color:var(--text2);margin-bottom:3px;
+  line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;
+  -webkit-box-orient:vertical;overflow:hidden;}
+.fc-cnt{font-size:11px;color:var(--hint);}
+.fc-menu{
+  position:absolute;top:8px;right:8px;background:none;border:none;
+  color:var(--hint);font-size:18px;cursor:pointer;
+  padding:4px 8px;border-radius:8px;line-height:1;
+}
+.fc-menu:active{background:rgba(74,122,232,.1);}
+
+.btn-nf{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  margin:2px 12px 16px;width:calc(100% - 24px);
+  border:1.5px dashed rgba(74,122,232,.18);background:none;
+  border-radius:18px;padding:14px;cursor:pointer;
+  color:var(--sub);font-size:14px;font-weight:500;
+  font-family:'Inter',sans-serif;transition:all .15s;
+}
+.btn-nf:active{background:rgba(74,122,232,.07);border-color:rgba(74,122,232,.4);}
+
+/* ═══════════════════════
+   DOC COUNT
+═══════════════════════ */
+.doc-count{
+  flex-shrink:0;padding:2px 15px 5px;
+  font-size:11px;color:var(--hint);
+}
+
+/* ═══════════════════════
+   DOC GRID
+═══════════════════════ */
+#docGrid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:11px;padding:6px 11px 20px;
+}
+.dc{
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:18px;overflow:hidden;cursor:pointer;
+  animation:fadeUp .28s ease both;transition:transform .12s;
+  box-shadow:0 3px 16px rgba(0,0,0,.5);
+}
+.dc:active{transform:scale(.94);}
+.ct{
+  width:100%;aspect-ratio:3/4;background:var(--card2);
+  position:relative;overflow:hidden;
+}
+.ct img{width:100%;height:100%;object-fit:cover;display:block;}
+.pph{
+  width:100%;height:100%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:8px;
+  background:linear-gradient(150deg,var(--card2),rgba(16,24,52,.95));
+}
+.pph-i{font-size:34px;}
+.pph-t{font-size:9px;letter-spacing:2px;color:var(--hint);text-transform:uppercase;}
+.tb-badge{
+  position:absolute;top:7px;left:7px;padding:3px 7px;border-radius:7px;
+  font-size:9px;font-weight:700;letter-spacing:.8px;
+  text-transform:uppercase;color:#fff;
+}
+.tb-pdf{background:rgba(232,64,96,.85);}
+.tb-jpg,.tb-jpeg,.tb-png{background:rgba(74,122,232,.85);}
+
+/* Download button on card */
+.dl-btn{
+  position:absolute;top:6px;right:6px;width:30px;height:30px;
+  border-radius:50%;background:rgba(4,6,15,.75);
+  backdrop-filter:blur(8px);border:1px solid rgba(74,122,232,.2);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:transform .1s;
+}
+.dl-btn:active{transform:scale(.84);}
+
+.di{padding:9px 10px 11px;}
+.dn{
+  font-size:13px;font-weight:600;color:var(--text2);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+  overflow:hidden;line-height:1.4;margin-bottom:3px;
+}
+.dm{font-size:10px;color:var(--hint);}
+
+/* ═══════════════════════
+   EMPTY STATE
+═══════════════════════ */
+.emp{
+  display:none;flex-direction:column;align-items:center;
+  justify-content:center;padding:60px 24px;gap:12px;text-align:center;
+}
+.emp.on{display:flex;}
+.emp-i{font-size:60px;opacity:.18;}
+.emp-t{font-size:17px;font-weight:700;color:var(--sub);}
+.emp-s{font-size:13px;color:var(--hint);line-height:1.65;max-width:200px;}
+
+/* ═══════════════════════
+   FOOTER
+═══════════════════════ */
+.footer{
+  flex-shrink:0;text-align:center;
+  padding:9px 14px calc(9px + var(--binset));
+  font-size:11px;color:var(--hint);letter-spacing:.5px;
+  border-top:1px solid rgba(74,122,232,.07);
+  background:rgba(4,6,15,.7);
+}
+.footer span{
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  font-weight:600;
+}
+
+/* ═══════════════════════
+   PDF VIEWER
+═══════════════════════ */
+#pdfScreen{background:#111418;}
+.vbar{
+  flex-shrink:0;display:flex;align-items:center;gap:8px;
+  padding:calc(10px + var(--inset)) 8px 10px;
+  background:#0A0C14;border-bottom:1px solid rgba(255,255,255,.07);
+}
+.vt{
+  flex:1;color:#E0E8FF;font-size:14px;font-weight:600;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  font-family:'Inter',sans-serif;
+}
+.v-info{font-size:11px;color:#444;white-space:nowrap;}
+.v-dl{
+  background:rgba(74,122,232,.15);border:1px solid rgba(74,122,232,.25);
+  color:#A0B8E8;font-size:12px;cursor:pointer;
+  padding:7px 12px;border-radius:10px;white-space:nowrap;
+  font-family:'Inter',sans-serif;
+}
+.v-dl:active{background:rgba(74,122,232,.25);}
+
+/* PDF scroll area */
+#pdfWrap{
+  flex:1;overflow:auto;-webkit-overflow-scrolling:touch;
+  background:#191C24;position:relative;
+}
+#pdfWrap::-webkit-scrollbar{display:none;}
+#pdfSizer{position:relative;min-width:100%;}
+#pdfPages{
+  position:absolute;top:0;left:0;
+  display:flex;flex-direction:column;
+  align-items:center;gap:3px;padding:4px 0 80px;
+  transform-origin:top center;will-change:transform;
+  width:100%;
+}
+.pcanvas{display:block;box-shadow:0 2px 10px rgba(0,0,0,.6);}
+#pdfLoader{
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:14px;padding:100px 20px;
+  color:#555;font-size:14px;min-height:300px;
+}
+.perr{
+  color:#FF8A9B;text-align:center;padding:28px 20px;font-size:14px;
+  line-height:1.8;background:rgba(232,64,96,.06);margin:14px;
+  border-radius:14px;border:1px solid rgba(232,64,96,.12);
+}
+#pdfZH{
+  position:fixed;bottom:70px;left:50%;transform:translateX(-50%);
+  background:rgba(0,0,0,.65);color:rgba(255,255,255,.45);
+  font-size:11px;padding:6px 14px;border-radius:18px;
+  pointer-events:none;transition:opacity .3s;white-space:nowrap;z-index:50;
+}
+#pdfZH.gone{opacity:0;}
+
+/* ═══════════════════════
+   IMAGE VIEWER
+═══════════════════════ */
+#imgScreen{background:#000;}
+.ibar{
+  position:absolute;top:0;left:0;right:0;z-index:10;
+  background:linear-gradient(180deg,rgba(0,0,0,.78),transparent);
+  padding:calc(12px + var(--inset)) 8px 22px;
+  display:flex;align-items:center;gap:8px;transition:opacity .25s;
+}
+.ibar.hidden{opacity:0;pointer-events:none;}
+.ivp{
+  position:absolute;inset:0;display:flex;align-items:center;
+  justify-content:center;touch-action:none;overflow:hidden;
+}
+#vimg{
+  max-width:100%;max-height:100%;object-fit:contain;
+  transform-origin:center;pointer-events:none;
+  user-select:none;-webkit-user-select:none;display:block;will-change:transform;
+}
+.ihint{
+  position:absolute;bottom:36px;left:50%;transform:translateX(-50%);
+  background:rgba(0,0,0,.5);color:rgba(255,255,255,.42);
+  font-size:11px;padding:6px 14px;border-radius:18px;
+  pointer-events:none;transition:opacity .3s;white-space:nowrap;
+}
+.ihint.gone{opacity:0;}
+
+/* ═══════════════════════
+   MODALS
+═══════════════════════ */
+.ov{
+  position:fixed;inset:0;z-index:500;
+  background:rgba(2,3,12,.78);backdrop-filter:blur(10px);
+  display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .2s;
+}
+.ov.on{opacity:1;pointer-events:all;}
+.sh{
+  width:100%;max-width:480px;
+  background:linear-gradient(160deg,#0C1330 0%,#080E22 100%);
+  border-radius:24px 24px 0 0;
+  border:1.5px solid var(--border);border-bottom:none;
+  padding:16px 20px calc(44px + var(--binset));
+  transform:translateY(100%);
+  transition:transform .28s cubic-bezier(.25,1,.5,1);
+  box-shadow:0 -8px 40px rgba(0,0,0,.7);
+}
+.ov.on .sh{transform:translateY(0);}
+.hdl{width:34px;height:4px;border-radius:2px;
+  background:rgba(74,122,232,.2);margin:0 auto 17px;}
+.mt{font-size:17px;font-weight:700;color:var(--text2);
+  margin-bottom:5px;font-family:'Cinzel',serif;letter-spacing:.3px;}
+.ms{font-size:13px;color:var(--sub);margin-bottom:15px;line-height:1.55;}
+.inp{
+  width:100%;background:rgba(4,6,15,.9);
+  border:1.5px solid var(--border);border-radius:13px;
+  padding:13px 14px;color:var(--text2);font-size:15px;outline:none;
+  transition:border-color .2s;font-family:'Inter',sans-serif;
+  user-select:text;-webkit-user-select:text;
+}
+.inp:focus{border-color:rgba(74,122,232,.55);}
+.inp::placeholder{color:var(--hint);}
+.lbl{
+  font-size:10px;font-weight:700;color:var(--sub);
+  margin:13px 0 8px;letter-spacing:1.5px;text-transform:uppercase;
+}
+.igrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:4px;}
+.ico{
+  width:100%;aspect-ratio:1;border-radius:11px;
+  border:2px solid rgba(74,122,232,.14);background:rgba(10,16,32,.8);
+  font-size:19px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .1s;
+}
+.ico.sel{border-color:var(--accent);background:rgba(74,122,232,.18);}
+.ico:active{transform:scale(.84);}
+.crow{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.col{width:27px;height:27px;border-radius:50%;border:3px solid transparent;cursor:pointer;transition:transform .1s;}
+.col.sel{box-shadow:0 0 0 2.5px var(--accent);transform:scale(1.22);}
+.brow{display:flex;gap:10px;margin-top:13px;}
+.bpri{
+  flex:1;padding:14px;border-radius:13px;border:none;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff;font-size:15px;font-weight:600;cursor:pointer;
+  font-family:'Inter',sans-serif;
+  box-shadow:0 4px 18px var(--glow1);transition:opacity .12s;
+}
+.bpri:active{opacity:.8;}
+.bpri:disabled{opacity:.28;box-shadow:none;}
+.bsec{
+  padding:14px 17px;border-radius:13px;
+  border:1.5px solid var(--border);background:none;
+  color:var(--sub);font-size:15px;cursor:pointer;
+  font-family:'Inter',sans-serif;
+}
+.bsec:active{background:rgba(74,122,232,.08);}
+.bdel{
+  flex:1;padding:14px;border-radius:13px;border:none;
+  background:linear-gradient(135deg,#C02840,#E84060);
+  color:#fff;font-size:15px;font-weight:600;cursor:pointer;
+  font-family:'Inter',sans-serif;
+}
+.bdel:active{opacity:.8;}
+
+/* Download info modal */
+#dlModal .sh{text-align:center;}
+.dl-icon{font-size:52px;margin-bottom:10px;}
+.dl-path{
+  background:rgba(74,122,232,.08);border:1px solid rgba(74,122,232,.2);
+  border-radius:10px;padding:12px;
+  font-size:13px;color:var(--accent);
+  font-family:monospace;margin:14px 0;line-height:1.5;
+  user-select:text;-webkit-user-select:text;
+}
+
+/* Context Menu */
+.cm{
+  position:fixed;inset:0;z-index:450;
+  background:rgba(2,3,12,.68);backdrop-filter:blur(7px);
+  display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .18s;
+}
+.cm.on{opacity:1;pointer-events:all;}
+.cmb{
+  width:100%;max-width:480px;
+  background:linear-gradient(160deg,#0C1330,#080E22);
+  border-radius:22px 22px 0 0;padding:13px 18px calc(46px + var(--binset));
+  border-top:1.5px solid var(--border);
+  transform:translateY(100%);transition:transform .24s cubic-bezier(.25,1,.5,1);
+}
+.cm.on .cmb{transform:translateY(0);}
+.mi{
+  display:flex;align-items:center;gap:13px;padding:14px 0;
+  border-bottom:1px solid rgba(74,122,232,.07);cursor:pointer;
+  font-size:15px;font-weight:500;color:var(--text);font-family:'Inter',sans-serif;
+}
+.mi:last-child{border-bottom:none;}
+.mi.danger{color:var(--red);}
+.mii{font-size:20px;width:30px;text-align:center;}
+
+/* ── Toast ── */
+#toast{
+  position:fixed;bottom:85px;left:50%;
+  transform:translateX(-50%) translateY(18px);
+  background:linear-gradient(135deg,rgba(12,19,48,.97),rgba(8,14,34,.97));
+  color:var(--text);padding:10px 20px;border-radius:12px;
+  font-size:13px;z-index:9000;opacity:0;transition:all .25s;
+  pointer-events:none;white-space:nowrap;
+  border:1px solid var(--border);box-shadow:0 4px 24px rgba(0,0,0,.6);
+  font-family:'Inter',sans-serif;
+}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ── Spinner ── */
+.spin{
+  width:30px;height:30px;border-radius:50%;
+  border:3px solid rgba(74,122,232,.14);border-top-color:var(--accent);
+  animation:doSpin .7s linear infinite;
+}
+@keyframes doSpin{to{transform:rotate(360deg);}}
+
+/* ── Theme Toggle (hidden – now inside settings menu) ── */
+#themeToggle{display:none;}
+
+/* ── Settings Menu Button ── */
+.tb-settings{
+  width:38px;height:38px;border-radius:50%;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  background:rgba(74,122,232,.1);color:var(--text);font-size:20px;
+  border:1px solid var(--border);transition:transform .12s,opacity .12s;
+  font-family:sans-serif;
+}
+.tb-settings:active{transform:scale(.84);}
+
+/* ── Settings Dropdown ── */
+#settingsMenu{
+  position:fixed;top:0;right:0;left:0;bottom:0;z-index:8500;
+  display:none;
+}
+#settingsMenu.on{display:block;}
+#settingsMenuBox{
+  position:absolute;top:calc(60px + var(--inset));right:12px;
+  background:linear-gradient(160deg,#0C1330,#080E22);
+  border:1.5px solid var(--border);border-radius:16px;
+  padding:6px;min-width:180px;
+  box-shadow:0 8px 32px rgba(0,0,0,.7);
+  animation:menuPop .15s ease both;
+}
+body.light #settingsMenuBox{
+  background:linear-gradient(160deg,#FFFFFF,#F3ECE6);
+}
+@keyframes menuPop{from{opacity:0;transform:scale(.92) translateY(-6px);}to{opacity:1;transform:none;}}
+.sm-item{
+  display:flex;align-items:center;gap:10px;padding:12px 14px;
+  border-radius:11px;cursor:pointer;font-size:14px;font-weight:500;
+  color:var(--text);font-family:'Inter',sans-serif;transition:background .1s;
+}
+.sm-item:active{background:rgba(74,122,232,.12);}
+.sm-icon{font-size:18px;width:24px;text-align:center;}
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+<div id="app">
+
+<!-- ═══════════ SPLASH ═══════════ -->
+<div id="splash">
+  <div class="splash-stars" id="splashStars"></div>
+  <div class="splash-orb1"></div>
+  <div class="splash-orb2"></div>
+  <div class="splash-orb3"></div>
+  <div class="splash-logo">🗂️</div>
+  <div class="splash-name">Paranchi's<br>Documents</div>
+  <div class="splash-sub">Document Vault</div>
+  <div class="splash-line"></div>
+  <div class="splash-made">Made with ❤️ by <span>Abdullah Paranchi</span></div>
+  <div class="splash-progress"><div class="splash-progress-fill"></div></div>
+</div>
+
+<!-- ═══════════ HOME ═══════════ -->
+<div class="screen active" id="homeScreen">
+  <div class="topbar">
+    <div class="tb-left">
+      <div class="eyebrow">Document Vault</div>
+      <div class="appname">Paranchi's Documents</div>
+    </div>
+    <button class="tb-settings" id="settingsBtn" title="Settings">⋮</button>
+  </div>
+  <div class="search-wrap">
+    <div class="sbox">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#243858" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="gSI" type="text" placeholder="Search all documents…" autocomplete="off">
+      <button class="sclr" id="gSC">×</button>
+    </div>
+  </div>
+  <div class="scroll" id="homeScroll">
+    <div id="gResults"></div>
+    <div id="folderSection">
+      <div class="sec-lbl">Your Folders</div>
+      <div id="folderGrid"></div>
+      <button class="btn-nf" id="newFolderBtn">✦ &nbsp;Create New Folder</button>
+    </div>
+    <div class="footer">Made with ❤️ by <span>Abdullah Paranchi</span></div>
+  </div>
+</div>
+
+<!-- ═══════════ FOLDER ═══════════ -->
+<div class="screen" id="folderScreen">
+  <div class="topbar">
+    <button class="tb-btn btn-back" id="folderBack">‹</button>
+    <div class="tb-left">
+      <div class="appname" id="folderTitle" style="font-size:15px">Folder</div>
+    </div>
+    <button class="tb-btn btn-add" id="folderAddBtn" title="Add">+</button>
+  </div>
+  <div class="search-wrap">
+    <div class="sbox">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#243858" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="dSI" type="text" placeholder="Search in this folder…" autocomplete="off">
+      <button class="sclr" id="dSC">×</button>
+    </div>
+  </div>
+  <div class="doc-count" id="docCount">0 documents</div>
+  <div class="scroll">
+    <div class="emp" id="docEmp">
+      <div class="emp-i">📂</div>
+      <div class="emp-t">Empty Folder</div>
+      <div class="emp-s">Tap + above to add a document</div>
+    </div>
+    <div id="docGrid"></div>
+  </div>
+  <div class="footer">Made with ❤️ by <span>Abdullah Paranchi</span></div>
+</div>
+
+<!-- ═══════════ PDF VIEWER ═══════════ -->
+<div class="screen" id="pdfScreen">
+  <div class="vbar">
+    <button class="tb-btn btn-back" id="pdfBack" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);color:#fff;font-size:26px;">‹</button>
+    <div class="vt" id="pdfTitle">Document</div>
+    <span class="v-info" id="pdfInfo"></span>
+    <button class="v-dl" id="pdfDlBtn">⬇ Save</button>
+  </div>
+  <div id="pdfWrap">
+    <div id="pdfSizer">
+      <div id="pdfPages">
+        <div id="pdfLoader">
+          <div class="spin"></div>
+          <span>Loading PDF…</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="pdfZH">Pinch to zoom anywhere · Drag when zoomed</div>
+</div>
+
+<!-- ═══════════ IMAGE VIEWER ═══════════ -->
+<div class="screen" id="imgScreen">
+  <div class="ibar" id="imgBar">
+    <button class="tb-btn btn-back" id="imgBack" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.1);color:#fff;font-size:26px;">‹</button>
+    <div class="vt" id="imgTitle" style="color:#fff">Photo</div>
+    <button class="v-dl" id="imgDlBtn">⬇ Save</button>
+  </div>
+  <div class="ivp" id="imgVp">
+    <img id="vimg" src="" alt="" draggable="false">
+    <div class="ihint" id="imgHint">Double-tap to zoom · Pinch to zoom</div>
+  </div>
+</div>
+
+<!-- ═══════════ MODALS ═══════════ -->
+
+<!-- Folder Modal -->
+<div class="ov" id="folderModal">
+  <div class="sh">
+    <div class="hdl"></div>
+    <div class="mt" id="fmT">New Folder</div>
+    <div class="ms">Pick an icon, colour and name your folder.</div>
+    <div class="lbl">Icon</div>
+    <div class="igrid" id="iconGrid"></div>
+    <div class="lbl">Colour</div>
+    <div class="crow" id="colorRow"></div>
+    <input class="inp" id="fNI" type="text" placeholder="e.g. Aadhaar Card, Medical…" maxlength="30" autocomplete="off">
+    <div class="brow">
+      <button class="bsec" id="fmC">Cancel</button>
+      <button class="bpri" id="fmS" disabled>Create</button>
+    </div>
+  </div>
+</div>
+
+<!-- Rename Modal -->
+<div class="ov" id="renameModal">
+  <div class="sh">
+    <div class="hdl"></div>
+    <div class="mt">Name Your Document</div>
+    <div class="ms">Give it a clear name so you can find it easily.</div>
+    <input class="inp" id="nameInp" type="text" placeholder="e.g. Aadhaar Card, PAN Card…" maxlength="60" autocomplete="off">
+    <div class="brow">
+      <button class="bsec" id="rmC">Cancel</button>
+      <button class="bpri" id="rmS" disabled>Save Document</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="ov" id="deleteModal">
+  <div class="sh">
+    <div class="hdl"></div>
+    <div class="mt">Delete?</div>
+    <div class="ms" id="delMsg">This will be permanently removed.</div>
+    <div class="brow">
+      <button class="bsec" id="delC">Keep It</button>
+      <button class="bdel" id="delOk">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Download Info Modal -->
+<div class="ov" id="dlModal">
+  <div class="sh">
+    <div class="hdl"></div>
+    <div class="dl-icon">⬇️</div>
+    <div class="mt">File Saved!</div>
+    <div class="ms">Your file has been saved to:</div>
+    <div class="dl-path" id="dlPath">Android/My Documents/filename.pdf</div>
+    <div class="ms" style="font-size:12px;margin-bottom:0">Open your File Manager → Downloads → paranchi's documents → find the file → tap Share → choose WhatsApp, Gmail etc.</div>
+    <div class="brow" style="margin-top:14px">
+      <button class="bpri" id="dlOk">Got it ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- Folder Context Menu -->
+<div class="cm" id="fCM">
+  <div class="cmb">
+    <div class="hdl"></div>
+    <div class="mi" id="miEdit"><span class="mii">✏️</span>Edit Folder</div>
+    <div class="mi danger" id="miDel"><span class="mii">🗑️</span>Delete Folder &amp; All Contents</div>
+  </div>
+</div>
+
+<!-- Settings Menu -->
+<div id="settingsMenu">
+  <div id="settingsMenuBox">
+    <div class="sm-item" id="smTheme">
+      <span class="sm-icon" id="smThemeIcon">🌙</span>
+      <span id="smThemeLabel">Switch to Light</span>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="filePick" accept=".pdf,.jpg,.jpeg,.png" style="display:none">
+<button id="themeToggle" title="Toggle theme">🌙</button>
+<div id="toast"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+'use strict';
+
+/* ═══════════════════════════════
+   PDF.JS
+═══════════════════════════════ */
+let pdfJsOk=false;
+try{
+  if(typeof pdfjsLib!=='undefined'){
+    pdfjsLib.GlobalWorkerOptions.workerSrc=
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    pdfJsOk=true;
+  }
+}catch(e){}
+
+/* ═══════════════════════════════
+   CONSTANTS
+═══════════════════════════════ */
+const ICONS=['🗂️','🪪','📄','🖼️','💳','🎓','🏥','🏦','📋','📜','🔖','✈️','🏠','👶','💼','🎫','🔐','🪙','📑','🎒',
+  '👴','👨','👩','👧','👦','👦🏽','👧🏽','👨‍👩‍👧','👨‍👩‍👦','👨‍👩‍👧‍👦','👵','🧓','👩‍🦳','👨‍🦳','🧒','👶🏽','🫂','❤️‍🔥','🏡','🧸'];
+const COLORS=['#3A5AAE','#AE2848','#1A7842','#8A4800','#6634AE','#0E5888','#746000','#882448'];
+const DEFAULTS=[
+  {name:'Aadhaar Card',icon:'🪪',ci:0},
+  {name:'Documents',icon:'📄',ci:5},
+  {name:'Photos',icon:'🖼️',ci:4},
+  {name:'PAN & Cards',icon:'💳',ci:2},
+  {name:'Certificates',icon:'🎓',ci:3},
+];
+
+/* ═══════════════════════════════
+   STATE
+═══════════════════════════════ */
+let DB=null;
+let allFolders=[],curFolId=null,curFolDocs=[];
+let pendFile=null,toDel=null,curDocId=null,curBlobUrl=null;
+let editFolId=null,selIcon=0,selColor=0,menuFol=null;
+let curDocForDl=null;
+let exitCnt=0,exitTmr=null;
+let globalSearchActive=false;
+let folderSearchActive=false;
+
+/* PDF */
+let pdfDoc=null,pdfScale=1,pdfNatW=0,pdfNatH=0;
+let pdfPinch=false,pdfPD=0,pdfPS=1,pdfPMX=0,pdfPMY=0,pdfPSL=0,pdfPST=0;
+let pdfRendering=false;
+
+/* Image */
+let iS=1,iX=0,iY=0,iLastTap=0,iT=[];
+let iPD=0,iPS=1,iPX0=0,iPY0=0,iPMX=0,iPMY=0;
+let iDrag=false,iDLX=0,iDLY=0;
+
+/* ═══════════════════════════════
+   STAR CANVAS
+═══════════════════════════════ */
+function initStars(){
+  const cv=document.getElementById('stars');
+  const ctx=cv.getContext('2d');
+  cv.width=window.innerWidth;cv.height=window.innerHeight;
+  cv.style.cssText='position:fixed;inset:0;z-index:0;pointer-events:none;';
+  const stars=[];
+  for(let i=0;i<100;i++){
+    stars.push({
+      x:Math.random()*cv.width,y:Math.random()*cv.height,
+      r:Math.random()*1.4+.2,
+      a:Math.random()*.08+.01,
+      s:Math.random()*2+1,p:Math.random()*Math.PI*2
+    });
+  }
+  function draw(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    const t=Date.now()/1000;
+    stars.forEach(s=>{
+      const op=s.a+s.a*Math.sin(t/s.s+s.p);
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,255,255,${op})`;ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+/* Splash stars */
+function initSplashStars(){
+  const c=document.getElementById('splashStars');
+  for(let i=0;i<60;i++){
+    const s=document.createElement('div');s.className='ss';
+    const z=(Math.random()*2+.4).toFixed(1);
+    s.style.cssText=
+      `width:${z}px;height:${z}px;`+
+      `left:${(Math.random()*100).toFixed(1)}%;`+
+      `top:${(Math.random()*100).toFixed(1)}%;`+
+      `--d:${(Math.random()*4+2).toFixed(1)}s;`+
+      `--dl:${(Math.random()*6).toFixed(1)}s;`+
+      `--a:${(Math.random()*.04+.01).toFixed(2)};`+
+      `--b:${(Math.random()*.22+.06).toFixed(2)};`+
+      `opacity:.02;`;
+    c.appendChild(s);
+  }
+}
+
+/* ═══════════════════════════════
+   DB
+═══════════════════════════════ */
+function openDB(){
+  return new Promise((ok,fail)=>{
+    const r=indexedDB.open('paranchiV6',1);
+    r.onupgradeneeded=e=>{
+      const d=e.target.result;
+      if(!d.objectStoreNames.contains('folders'))
+        d.createObjectStore('folders',{keyPath:'id',autoIncrement:true});
+      if(!d.objectStoreNames.contains('documents')){
+        const s=d.createObjectStore('documents',{keyPath:'id',autoIncrement:true});
+        s.createIndex('fid','folderId',{unique:false});
+      }
+    };
+    r.onsuccess=()=>ok(r.result);
+    r.onerror=()=>fail(r.error);
+  });
+}
+const S=(s,m='readonly')=>DB.transaction(s,m).objectStore(s);
+const dbAll=s=>new Promise((ok,f)=>{const r=S(s).getAll();r.onsuccess=()=>ok(r.result);r.onerror=()=>f(r.error);});
+const dbGet=(s,id)=>new Promise((ok,f)=>{const r=S(s).get(id);r.onsuccess=()=>ok(r.result);r.onerror=()=>f(r.error);});
+const dbAdd=(s,v)=>new Promise((ok,f)=>{const r=S(s,'readwrite').add(v);r.onsuccess=()=>ok(r.result);r.onerror=()=>f(r.error);});
+const dbPut=(s,v)=>new Promise((ok,f)=>{const r=S(s,'readwrite').put(v);r.onsuccess=()=>ok(r.result);r.onerror=()=>f(r.error);});
+const dbDel=(s,id)=>new Promise((ok,f)=>{const r=S(s,'readwrite').delete(id);r.onsuccess=()=>ok();r.onerror=()=>f(r.error);});
+const dbIdx=(s,ix,v)=>new Promise((ok,f)=>{
+  const r=S(s).index(ix).getAll(IDBKeyRange.only(v));
+  r.onsuccess=()=>ok(r.result);r.onerror=()=>f(r.error);
+});
+
+/* ═══════════════════════════════
+   UTILS
+═══════════════════════════════ */
+const goScreen=id=>{
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+};
+const openM=id=>document.getElementById(id).classList.add('on');
+const closeM=id=>document.getElementById(id).classList.remove('on');
+const fmtD=ts=>new Date(ts).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+const fmtS=b=>b<1024?b+' B':b<1048576?(b/1024).toFixed(1)+' KB':(b/1048576).toFixed(1)+' MB';
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const mimeOf=ext=>ext==='pdf'?'application/pdf':ext==='png'?'image/png':'image/jpeg';
+const safeName=n=>n.replace(/[^a-zA-Z0-9_\-\. ]/g,'_');
+
+function safeCopy(d){
+  if(!d)return new Uint8Array(0);
+  if(d instanceof Uint8Array)return new Uint8Array(d.buffer.slice(0));
+  if(d instanceof ArrayBuffer)return new Uint8Array(d.slice(0));
+  return new Uint8Array(d);
+}
+
+let toastT;
+function toast(m,dur=3000){
+  const el=document.getElementById('toast');
+  el.textContent=m;el.classList.add('on');
+  clearTimeout(toastT);
+  toastT=setTimeout(()=>el.classList.remove('on'),dur);
+}
+
+/* ═══════════════════════════════
+   DOWNLOAD FILE
+   Works in Chrome AND Kodular WebView
+   Saves to Android/My Documents
+═══════════════════════════════ */
+function uint8ToBase64(u8){
+  let bin='';
+  const len=u8.byteLength;
+  for(let i=0;i<len;i++)bin+=String.fromCharCode(u8[i]);
+  return btoa(bin);
+}
+
+function downloadFile(doc){
+  try{
+    const data=safeCopy(doc.fileData);
+    const m=mimeOf(doc.ext);
+    const fn=safeName(doc.name)+'.'+doc.ext;
+    const folder="paranchi's documents";
+    const displayPath=`Downloads/${folder}/${fn}`;
+
+    /* ── Method 1: Kodular Android interface ── */
+    if(window.Android && typeof window.Android.downloadFile==='function'){
+      try{
+        const b64=uint8ToBase64(data);
+        /* Pass subfolder as part of filename so Kodular saves there */
+        window.Android.downloadFile(b64,fn,m);
+        document.getElementById('dlPath').textContent=displayPath;
+        openM('dlModal');
+        return;
+      }catch(ae){/* fall through */}
+    }
+
+    /* ── Method 2: Standard blob download (Chrome / WebView) ── */
+    try{
+      const blob=new Blob([data],{type:m});
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a');
+      a.href=url;
+      /* Use folder/filename so browser creates the subfolder */
+      a.download=folder+'/'+fn;
+      document.body.appendChild(a);a.click();
+      document.body.removeChild(a);
+      setTimeout(()=>URL.revokeObjectURL(url),10000);
+      document.getElementById('dlPath').textContent=displayPath;
+      openM('dlModal');
+      return;
+    }catch(be){/* fall through */}
+
+    /* ── Method 3: base64 data URI fallback for WebView ── */
+    const b64=uint8ToBase64(data);
+    const dataUri='data:'+m+';base64,'+b64;
+    const a=document.createElement('a');
+    a.href=dataUri;
+    a.download=folder+'/'+fn;
+    document.body.appendChild(a);a.click();
+    document.body.removeChild(a);
+    document.getElementById('dlPath').textContent=displayPath;
+    openM('dlModal');
+
+  }catch(e){
+    toast('⚠️ Could not save file — try opening in Chrome');
+  }
+}
+
+document.getElementById('dlOk').addEventListener('click',()=>closeM('dlModal'));
+
+/* ═══════════════════════════════
+   THUMBNAILS
+═══════════════════════════════ */
+async function thumbPDF(data){
+  if(!pdfJsOk)return null;
+  try{
+    const copy=safeCopy(data);
+    const d=await pdfjsLib.getDocument({data:copy}).promise;
+    const pg=await d.getPage(1);
+    const vp=pg.getViewport({scale:.5});
+    const cv=document.createElement('canvas');
+    cv.width=vp.width;cv.height=vp.height;
+    await pg.render({canvasContext:cv.getContext('2d'),viewport:vp}).promise;
+    d.destroy();
+    return cv.toDataURL('image/jpeg',.7);
+  }catch{return null;}
+}
+
+async function thumbIMG(data,ext){
+  return new Promise(res=>{
+    try{
+      const u=URL.createObjectURL(new Blob([data],{type:mimeOf(ext)}));
+      const img=new Image();
+      img.onload=()=>{
+        const MAX=300,r=Math.min(MAX/img.width,MAX/img.height,1);
+        const cv=document.createElement('canvas');
+        cv.width=Math.round(img.width*r);cv.height=Math.round(img.height*r);
+        cv.getContext('2d').drawImage(img,0,0,cv.width,cv.height);
+        URL.revokeObjectURL(u);res(cv.toDataURL('image/jpeg',.75));
+      };
+      img.onerror=()=>{URL.revokeObjectURL(u);res(null);};
+      img.src=u;
+    }catch{res(null);}
+  });
+}
+
+async function bgThumb(docId,data,ext){
+  try{
+    await new Promise(r=>setTimeout(r,600));
+    const th=ext==='pdf'?await thumbPDF(data):await thumbIMG(data,ext);
+    if(!th)return;
+    const doc=await dbGet('documents',docId);
+    if(!doc)return;
+    await dbPut('documents',{...doc,thumb:th});
+    const ct=document.querySelector(`.dc[data-id="${docId}"] .ct`);
+    if(ct){
+      const ph=ct.querySelector('.pph');
+      if(ph){
+        const img=document.createElement('img');
+        img.src=th;img.loading='lazy';
+        ph.replaceWith(img);
+      }
+    }
+  }catch(e){}
+}
+
+/* ═══════════════════════════════
+   FOLDERS
+═══════════════════════════════ */
+async function loadFolders(){
+  allFolders=(await dbAll('folders')).sort((a,b)=>(a.ts||0)-(b.ts||0));
+  const all=await dbAll('documents');
+  const g=document.getElementById('folderGrid');
+  g.innerHTML='';
+  allFolders.forEach((f,i)=>{
+    const cnt=all.filter(d=>d.folderId===f.id).length;
+    const bg=COLORS[f.ci]||COLORS[0];
+    const c=document.createElement('div');
+    c.className='fc';c.style.animationDelay=`${i*.05}s`;
+    c.innerHTML=`
+      <button class="fc-menu" data-id="${f.id}">⋮</button>
+      <div class="fi" style="background:${bg}22">${f.icon}</div>
+      <div class="fn">${esc(f.name)}</div>
+      <div class="fc-cnt">${cnt} item${cnt!==1?'s':''}</div>`;
+    c.addEventListener('click',e=>{if(!e.target.closest('.fc-menu'))openFolder(f);});
+    c.querySelector('.fc-menu').addEventListener('click',e=>{
+      e.stopPropagation();menuFol=f;openM('fCM');
+    });
+    g.appendChild(c);
+  });
+}
+
+function openFolder(f){
+  curFolId=f.id;
+  document.getElementById('folderTitle').textContent=f.icon+' '+f.name;
+  document.getElementById('dSI').value='';
+  document.getElementById('dSC').classList.remove('on');
+  folderSearchActive=false;
+  loadFolderDocs();
+  goScreen('folderScreen');
+}
+
+/* ═══════════════════════════════
+   DOCUMENTS
+═══════════════════════════════ */
+async function loadFolderDocs(){
+  curFolDocs=(await dbIdx('documents','fid',curFolId)).sort((a,b)=>b.ts-a.ts);
+  renderDocs(curFolDocs);
+}
+
+function renderDocs(docs){
+  const g=document.getElementById('docGrid');
+  const emp=document.getElementById('docEmp');
+  const cnt=document.getElementById('docCount');
+  g.innerHTML='';
+  cnt.textContent=`${docs.length} document${docs.length!==1?'s':''}`;
+  if(!docs.length){emp.classList.add('on');return;}
+  emp.classList.remove('on');
+  docs.forEach((doc,i)=>{
+    const c=document.createElement('div');
+    c.className='dc';c.dataset.id=doc.id;
+    c.style.animationDelay=`${i*.04}s`;
+    const th=doc.thumb
+      ?`<img src="${doc.thumb}" loading="lazy" alt="${esc(doc.name)}">`
+      :`<div class="pph"><div class="pph-i">${doc.ext==='pdf'?'📄':'🖼️'}</div><div class="pph-t">${doc.ext.toUpperCase()}</div></div>`;
+    c.innerHTML=`
+      <div class="ct">${th}
+        <span class="tb-badge tb-${doc.ext}">${doc.ext.toUpperCase()}</span>
+        <button class="dl-btn" aria-label="Save">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+            stroke="${doc.ext==='pdf'?'#FF8A9B':'#8AADFF'}" stroke-width="2.5">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+        </button>
+      </div>
+      <div class="di">
+        <div class="dn">${esc(doc.name)}</div>
+        <div class="dm">${fmtD(doc.ts)} · ${fmtS(doc.size)}</div>
+      </div>`;
+    let lp;
+    c.addEventListener('touchstart',()=>{
+      lp=setTimeout(()=>{
+        if(navigator.vibrate)navigator.vibrate(55);
+        toDel={type:'doc',data:doc};
+        document.getElementById('delMsg').textContent=`"${doc.name}" will be permanently deleted.`;
+        openM('deleteModal');
+      },620);
+    },{passive:true});
+    c.addEventListener('touchend',()=>clearTimeout(lp));
+    c.addEventListener('touchmove',()=>clearTimeout(lp));
+    c.addEventListener('click',e=>{
+      if(e.target.closest('.dl-btn'))return;
+      clearTimeout(lp);openDoc(doc);
+    });
+    c.querySelector('.dl-btn').addEventListener('click',async e=>{
+      e.stopPropagation();
+      const d=await dbGet('documents',doc.id);
+      if(d)downloadFile(d);
+    });
+    g.appendChild(c);
+  });
+}
+
+/* ═══════════════════════════════
+   GLOBAL SEARCH
+═══════════════════════════════ */
+document.getElementById('gSI').addEventListener('input',async e=>{
+  const q=e.target.value.trim().toLowerCase();
+  const gr=document.getElementById('gResults');
+  const fs=document.getElementById('folderSection');
+  document.getElementById('gSC').classList.toggle('on',q.length>0);
+  globalSearchActive=q.length>0;
+  if(!q){
+    gr.classList.remove('on');gr.innerHTML='';
+    fs.style.display='';return;
+  }
+  fs.style.display='none';gr.classList.add('on');
+  const all=await dbAll('documents');
+  const res=all.filter(d=>d.name.toLowerCase().includes(q));
+  const folMap={};allFolders.forEach(f=>folMap[f.id]=f);
+  if(!res.length){
+    gr.innerHTML=`<div class="gr-lbl">Search Results</div><div class="gr-empty">No documents found for "${esc(q)}"</div>`;
+    return;
+  }
+  gr.innerHTML=`<div class="gr-lbl">${res.length} result${res.length!==1?'s':''}</div>`;
+  res.forEach(doc=>{
+    const fol=folMap[doc.folderId];
+    const isImg=doc.ext!=='pdf';
+    const item=document.createElement('div');item.className='gr-item';
+    const th=doc.thumb&&isImg?`<img src="${doc.thumb}" alt="">`:
+      `<span>${isImg?'🖼️':'📄'}</span>`;
+    item.innerHTML=`
+      <div class="gr-th">${th}</div>
+      <div class="gr-inf">
+        <div class="gr-nm">${esc(doc.name)}</div>
+        <div class="gr-mt">${fol?fol.icon+' '+esc(fol.name):''} · ${fmtD(doc.ts)}</div>
+      </div>
+      <span class="gr-bd ${isImg?'gbd-img':'gbd-pdf'}">${doc.ext.toUpperCase()}</span>`;
+    item.addEventListener('click',()=>{curDocId=doc.id;curFolId=doc.folderId;openDoc(doc);});
+    gr.appendChild(item);
+  });
+});
+document.getElementById('gSC').addEventListener('click',()=>{
+  document.getElementById('gSI').value='';
+  document.getElementById('gSC').classList.remove('on');
+  document.getElementById('gResults').classList.remove('on');
+  document.getElementById('gResults').innerHTML='';
+  document.getElementById('folderSection').style.display='';
+  globalSearchActive=false;
+});
+
+/* Folder search */
+document.getElementById('dSI').addEventListener('input',e=>{
+  const q=e.target.value.trim().toLowerCase();
+  document.getElementById('dSC').classList.toggle('on',q.length>0);
+  folderSearchActive=q.length>0;
+  renderDocs(q?curFolDocs.filter(d=>d.name.toLowerCase().includes(q)):[...curFolDocs]);
+});
+document.getElementById('dSC').addEventListener('click',()=>{
+  document.getElementById('dSI').value='';
+  document.getElementById('dSC').classList.remove('on');
+  folderSearchActive=false;
+  renderDocs(curFolDocs);
+});
+
+/* ═══════════════════════════════
+   OPEN DOC
+═══════════════════════════════ */
+function openDoc(doc){curDocId=doc.id;doc.ext==='pdf'?viewPDF(doc):viewImg(doc);}
+
+/* ═══════════════════════════════
+   PDF VIEWER
+   - Renders at HD quality
+   - Pages rendered one by one (no freeze on large PDFs)
+   - Smooth pinch zoom toward finger position
+═══════════════════════════════ */
+const pdfWrap=document.getElementById('pdfWrap');
+const pdfSizer=document.getElementById('pdfSizer');
+const pdfPages=document.getElementById('pdfPages');
+
+function setPdfScale(){
+  pdfPages.style.transform=`scale(${pdfScale})`;
+  pdfSizer.style.width=(pdfNatW*pdfScale)+'px';
+  pdfSizer.style.height=(pdfNatH*pdfScale)+'px';
+}
+
+async function viewPDF(doc){
+  if(pdfRendering)return; // Prevent rapid double-open crash
+  document.getElementById('pdfTitle').textContent=doc.name;
+  document.getElementById('pdfInfo').textContent='';
+
+  // ★ Destroy old PDF properly first
+  if(pdfDoc){
+    try{await pdfDoc.destroy();}catch(e){}
+    pdfDoc=null;
+  }
+  pdfScale=1;pdfNatW=0;pdfNatH=0;
+  pdfPages.innerHTML='';
+  pdfPages.style.transform='';
+  pdfSizer.style.width='';pdfSizer.style.height='';
+  pdfWrap.scrollLeft=0;pdfWrap.scrollTop=0;
+
+  const ld=document.createElement('div');
+  ld.id='pdfLoader';
+  ld.style.cssText='display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px 20px;gap:14px;color:#555;font-size:14px;';
+  ld.innerHTML='<div class="spin"></div><span>Loading PDF…</span>';
+  pdfPages.appendChild(ld);
+  goScreen('pdfScreen');
+
+  const zh=document.getElementById('pdfZH');
+  zh.classList.remove('gone');
+  setTimeout(()=>zh.classList.add('gone'),3500);
+
+  if(!pdfJsOk){
+    pdfPages.innerHTML='<div class="perr">📵 PDF viewer needs internet once to load the PDF engine.<br><br>Connect to internet → open app → after that fully offline forever.</div>';
+    return;
+  }
+
+  pdfRendering=true;
+  try{
+    // ★ KEY FIX: Always copy data before passing to PDF.js
+    // PDF.js transfers the ArrayBuffer — copy prevents detach error on reopen
+    const copy=safeCopy(doc.fileData);
+    pdfDoc=await pdfjsLib.getDocument({
+      data:copy,
+      disableAutoFetch:false,
+      disableStream:false,
+    }).promise;
+
+    const total=pdfDoc.numPages;
+    document.getElementById('pdfInfo').textContent=total+' page'+(total!==1?'s':'');
+    pdfPages.innerHTML='';
+
+    const DPR=Math.min(window.devicePixelRatio||2,2.5);
+    // HD quality: render at 2.5x for sharp text when zoomed
+    const QUALITY=1.8;
+    const viewW=pdfWrap.clientWidth||window.innerWidth;
+
+    // Render pages one at a time — prevents freeze on large PDFs
+    for(let i=1;i<=total;i++){
+      if(!pdfDoc)break; // Stopped (user went back)
+      const page=await pdfDoc.getPage(i);
+      const vp0=page.getViewport({scale:1});
+      const sc=(viewW/vp0.width)*DPR*QUALITY;
+      const vp=page.getViewport({scale:sc});
+      const cv=document.createElement('canvas');
+      cv.className='pcanvas';
+      cv.width=vp.width;cv.height=vp.height;
+      cv.style.width=(vp.width/(DPR*QUALITY))+'px';
+      cv.style.height=(vp.height/(DPR*QUALITY))+'px';
+      pdfPages.appendChild(cv);
+      await page.render({canvasContext:cv.getContext('2d'),viewport:vp}).promise;
+      // After first page show progress
+      if(i===1&&total>1){
+        document.getElementById('pdfInfo').textContent=`1/${total} pages`;
+      }
+      if(total>1){
+        document.getElementById('pdfInfo').textContent=`${i}/${total} pages`;
+      }
+      // Yield to UI after each page to keep scrolling smooth
+      await new Promise(r=>setTimeout(r,0));
+    }
+
+    pdfNatW=pdfPages.scrollWidth;
+    pdfNatH=pdfPages.scrollHeight;
+    pdfSizer.style.width=pdfNatW+'px';
+    pdfSizer.style.height=pdfNatH+'px';
+    document.getElementById('pdfInfo').textContent=total+' page'+(total!==1?'s':'');
+
+  }catch(err){
+    pdfPages.innerHTML=`<div class="perr">❌ Could not open this PDF.<br><small style="opacity:.5">${err.message||''}</small></div>`;
+  }finally{
+    pdfRendering=false;
+  }
+}
+
+/* PDF pinch zoom — zooms toward exact finger position, works on all sides */
+pdfWrap.addEventListener('touchstart',e=>{
+  if(e.touches.length===2){
+    pdfPinch=true;
+    pdfPD=Math.hypot(e.touches[1].clientX-e.touches[0].clientX,e.touches[1].clientY-e.touches[0].clientY);
+    pdfPS=pdfScale;
+    /* Midpoint relative to the pdfWrap viewport */
+    const r=pdfWrap.getBoundingClientRect();
+    pdfPMX=((e.touches[0].clientX+e.touches[1].clientX)/2)-r.left;
+    pdfPMY=((e.touches[0].clientY+e.touches[1].clientY)/2)-r.top;
+    /* Scroll offsets at pinch start */
+    pdfPSL=pdfWrap.scrollLeft;
+    pdfPST=pdfWrap.scrollTop;
+  }
+},{passive:true});
+
+pdfWrap.addEventListener('touchmove',e=>{
+  if(!pdfPinch||e.touches.length<2)return;
+  e.preventDefault();
+  const d=Math.hypot(e.touches[1].clientX-e.touches[0].clientX,e.touches[1].clientY-e.touches[0].clientY);
+  const ns=Math.max(.5,Math.min(6,pdfPS*(d/pdfPD)));
+
+  /*
+   * transform-origin is "top center" so the origin X = pdfNatW/2 * oldScale
+   * We must account for that horizontal centering offset.
+   *
+   * The visible content point under the pinch midpoint:
+   *   contentX = scrollLeft + midpointX  (in scaled space)
+   *   contentY = scrollTop  + midpointY  (in scaled space)
+   *
+   * After scale change, we want that same content point to stay
+   * under the midpoint, so:
+   *   newScrollLeft = contentX_inNewScale - midpointX
+   *   newScrollTop  = contentY_inNewScale - midpointY
+   *
+   * Because origin is top-center, horizontal scroll offset is:
+   *   scrollLeft positions content; scaled width = pdfNatW * scale
+   *   The centering shift = (scaledWidth - wrapWidth) / 2 when content narrower than wrap
+   *
+   * Simplest correct formula:
+   *   docPointX = (scrollLeft + midpointX) / oldScale
+   *   docPointY = (scrollTop  + midpointY) / oldScale
+   *   newScrollLeft = docPointX * newScale - midpointX
+   *   newScrollTop  = docPointY * newScale - midpointY
+   *
+   * But with top-center origin, the transform shifts content to center horizontally.
+   * We compensate by using the actual rendered left edge position.
+   */
+
+  const wrapW=pdfWrap.clientWidth;
+  const scaledW=pdfNatW*pdfPS;
+  /* Left edge of scaled content in scroll space */
+  const leftEdgeOld = scaledW < wrapW ? (wrapW - scaledW)/2 : 0;
+
+  /* Content coordinate under pinch midpoint */
+  const docX = (pdfPSL + pdfPMX - leftEdgeOld) / pdfPS;
+  const docY = (pdfPST + pdfPMY) / pdfPS;
+
+  pdfScale = ns;
+  setPdfScale();
+
+  const scaledWNew = pdfNatW * ns;
+  const leftEdgeNew = scaledWNew < wrapW ? (wrapW - scaledWNew)/2 : 0;
+
+  pdfWrap.scrollLeft = docX * ns + leftEdgeNew - pdfPMX;
+  pdfWrap.scrollTop  = docY * ns - pdfPMY;
+},{passive:false});
+
+pdfWrap.addEventListener('touchend',e=>{
+  if(e.touches.length<2){
+    pdfPinch=false;
+    if(pdfScale<1){pdfScale=1;setPdfScale();}
+  }
+},{passive:true});
+
+/* PDF save button */
+document.getElementById('pdfDlBtn').addEventListener('click',async()=>{
+  if(curDocId){const d=await dbGet('documents',curDocId);if(d)downloadFile(d);}
+});
+
+/* ═══════════════════════════════
+   IMAGE VIEWER
+═══════════════════════════════ */
+const imgVp=document.getElementById('imgVp');
+
+function viewImg(doc){
+  document.getElementById('imgTitle').textContent=doc.name;
+  if(curBlobUrl){URL.revokeObjectURL(curBlobUrl);curBlobUrl=null;}
+  const data=safeCopy(doc.fileData);
+  curBlobUrl=URL.createObjectURL(new Blob([data],{type:mimeOf(doc.ext)}));
+  const vi=document.getElementById('vimg');
+  vi.src=curBlobUrl;
+  iS=1;iX=0;iY=0;applyIT();
+  document.getElementById('imgBar').classList.remove('hidden');
+  const h=document.getElementById('imgHint');
+  h.classList.remove('gone');
+  setTimeout(()=>h.classList.add('gone'),3200);
+  goScreen('imgScreen');
+}
+
+function applyIT(anim){
+  const el=document.getElementById('vimg');
+  el.style.transition=anim?'transform .2s ease':'none';
+  el.style.transform=`translate(${iX}px,${iY}px) scale(${iS})`;
+}
+function clampI(){
+  if(iS<=1){iX=0;iY=0;return;}
+  const el=document.getElementById('vimg');
+  const vpW=imgVp.clientWidth,vpH=imgVp.clientHeight;
+  const mX=Math.max(0,((el.naturalWidth||el.clientWidth)*iS-vpW)/2);
+  const mY=Math.max(0,((el.naturalHeight||el.clientHeight)*iS-vpH)/2);
+  iX=Math.max(-mX,Math.min(mX,iX));
+  iY=Math.max(-mY,Math.min(mY,iY));
+}
+
+imgVp.addEventListener('touchstart',e=>{
+  iT=Array.from(e.touches);
+  if(iT.length===2){
+    iPD=Math.hypot(iT[1].clientX-iT[0].clientX,iT[1].clientY-iT[0].clientY);
+    iPS=iS;iPX0=iX;iPY0=iY;
+    iPMX=(iT[0].clientX+iT[1].clientX)/2;
+    iPMY=(iT[0].clientY+iT[1].clientY)/2;
+  }
+  if(iT.length===1){
+    const now=Date.now();
+    if(now-iLastTap<270){
+      if(iS>1.05){iS=1;iX=0;iY=0;}
+      else{
+        const r=imgVp.getBoundingClientRect();
+        const tx=iT[0].clientX-r.left-r.width/2;
+        const ty=iT[0].clientY-r.top-r.height/2;
+        iS=2.8;iX=-tx*(iS-1)/iS;iY=-ty*(iS-1)/iS;clampI();
+      }
+      applyIT(true);
+    }
+    iLastTap=now;
+    if(iS>1.05){iDrag=true;iDLX=iT[0].clientX;iDLY=iT[0].clientY;}
+  }
+},{passive:true});
+
+imgVp.addEventListener('touchmove',e=>{
+  e.preventDefault();
+  const t=Array.from(e.touches);
+  if(t.length===2&&iT.length>=2){
+    const d=Math.hypot(t[1].clientX-t[0].clientX,t[1].clientY-t[0].clientY);
+    const ns=Math.max(.85,Math.min(7,iPS*d/iPD));
+    const ratio=ns/iPS;
+    const cx=imgVp.clientWidth/2,cy=imgVp.clientHeight/2;
+    iX=(iPMX-cx)+(iPX0-(iPMX-cx))*ratio;
+    iY=(iPMY-cy)+(iPY0-(iPMY-cy))*ratio;
+    iS=ns;clampI();applyIT();
+  }else if(t.length===1&&iDrag&&iS>1.05){
+    iX+=t[0].clientX-iDLX;iY+=t[0].clientY-iDLY;
+    iDLX=t[0].clientX;iDLY=t[0].clientY;
+    clampI();applyIT();
+  }
+  iT=t;
+},{passive:false});
+
+imgVp.addEventListener('touchend',e=>{
+  iT=Array.from(e.touches);
+  if(!iT.length){iDrag=false;if(iS<1){iS=1;iX=0;iY=0;applyIT(true);}}
+},{passive:true});
+imgVp.addEventListener('click',()=>document.getElementById('imgBar').classList.toggle('hidden'));
+
+/* Image save button */
+document.getElementById('imgDlBtn').addEventListener('click',async()=>{
+  if(curDocId){const d=await dbGet('documents',curDocId);if(d)downloadFile(d);}
+});
+
+/* ═══════════════════════════════
+   ADD FILE
+═══════════════════════════════ */
+document.getElementById('folderAddBtn').addEventListener('click',()=>document.getElementById('filePick').click());
+document.getElementById('filePick').addEventListener('change',async e=>{
+  const file=e.target.files[0];if(!file)return;e.target.value='';
+  const ext=file.name.split('.').pop().toLowerCase();
+  if(!['pdf','jpg','jpeg','png'].includes(ext)){toast('❌ Only PDF, JPG, PNG allowed');return;}
+  toast('Reading file…');
+  try{
+    const ab=await file.arrayBuffer();
+    pendFile={data:new Uint8Array(ab),ext,size:file.size,orig:file.name.replace(/\.[^/.]+$/,'')};
+    document.getElementById('nameInp').value=pendFile.orig;
+    document.getElementById('rmS').disabled=false;
+    openM('renameModal');
+    setTimeout(()=>document.getElementById('nameInp').focus(),360);
+  }catch(err){toast('❌ Could not read file');}
+});
+
+document.getElementById('nameInp').addEventListener('input',e=>{
+  document.getElementById('rmS').disabled=!e.target.value.trim();
+});
+
+document.getElementById('rmS').addEventListener('click',async()=>{
+  const name=document.getElementById('nameInp').value.trim();
+  if(!name||!pendFile)return;
+  closeM('renameModal');
+  try{
+    const id=await dbAdd('documents',{
+      folderId:curFolId,name,ext:pendFile.ext,
+      fileData:pendFile.data,
+      thumb:null,ts:Date.now(),size:pendFile.size
+    });
+    toast('✓ Saved!');
+    const d=pendFile.data,ex=pendFile.ext;
+    pendFile=null;
+    await loadFolderDocs();await loadFolders();
+    bgThumb(id,d,ex);
+  }catch(err){toast('❌ Save failed: '+err.message);}
+});
+document.getElementById('rmC').addEventListener('click',()=>{closeM('renameModal');pendFile=null;});
+
+/* ═══════════════════════════════
+   DELETE
+═══════════════════════════════ */
+document.getElementById('delOk').addEventListener('click',async()=>{
+  if(!toDel)return;closeM('deleteModal');
+  try{
+    if(toDel.type==='doc'){
+      await dbDel('documents',toDel.data.id);
+      await loadFolderDocs();await loadFolders();toast('Document deleted');
+    }else{
+      const docs=await dbIdx('documents','fid',toDel.data.id);
+      for(const d of docs)await dbDel('documents',d.id);
+      await dbDel('folders',toDel.data.id);
+      closeM('fCM');await loadFolders();toast('Folder deleted');
+    }
+  }catch(e){toast('Delete failed');}
+  toDel=null;
+});
+document.getElementById('delC').addEventListener('click',()=>{closeM('deleteModal');toDel=null;});
+
+/* ═══════════════════════════════
+   FOLDER MODAL
+═══════════════════════════════ */
+function buildFolMod(){
+  const ig=document.getElementById('iconGrid');
+  const cr=document.getElementById('colorRow');
+  ig.innerHTML='';
+  ICONS.forEach((ic,i)=>{
+    const b=document.createElement('button');
+    b.className='ico'+(i===selIcon?' sel':'');b.textContent=ic;
+    b.addEventListener('click',()=>{selIcon=i;ig.querySelectorAll('.ico').forEach((x,j)=>x.classList.toggle('sel',j===i));});
+    ig.appendChild(b);
+  });
+  cr.innerHTML='';
+  COLORS.forEach((c,i)=>{
+    const b=document.createElement('button');
+    b.className='col'+(i===selColor?' sel':'');b.style.background=c;
+    b.addEventListener('click',()=>{selColor=i;cr.querySelectorAll('.col').forEach((x,j)=>x.classList.toggle('sel',j===i));});
+    cr.appendChild(b);
+  });
+}
+
+document.getElementById('newFolderBtn').addEventListener('click',()=>{
+  editFolId=null;selIcon=0;selColor=0;
+  document.getElementById('fmT').textContent='New Folder';
+  document.getElementById('fmS').textContent='Create';
+  document.getElementById('fNI').value='';
+  document.getElementById('fmS').disabled=true;
+  buildFolMod();openM('folderModal');
+  setTimeout(()=>document.getElementById('fNI').focus(),360);
+});
+document.getElementById('fNI').addEventListener('input',e=>{
+  document.getElementById('fmS').disabled=!e.target.value.trim();
+});
+document.getElementById('fmS').addEventListener('click',async()=>{
+  const name=document.getElementById('fNI').value.trim();
+  if(!name)return;closeM('folderModal');
+  try{
+    if(editFolId){
+      const f=await dbGet('folders',editFolId);
+      await dbPut('folders',{...f,name,icon:ICONS[selIcon],ci:selColor});
+      toast('Folder updated ✓');
+    }else{
+      await dbAdd('folders',{name,icon:ICONS[selIcon],ci:selColor,ts:Date.now()});
+      toast('Folder created ✓');
+    }
+    await loadFolders();
+  }catch(e){toast('Could not save folder');}
+});
+document.getElementById('fmC').addEventListener('click',()=>closeM('folderModal'));
+document.getElementById('miEdit').addEventListener('click',async()=>{
+  closeM('fCM');if(!menuFol)return;
+  editFolId=menuFol.id;
+  selIcon=Math.max(0,ICONS.indexOf(menuFol.icon));
+  selColor=menuFol.ci||0;
+  document.getElementById('fmT').textContent='Edit Folder';
+  document.getElementById('fmS').textContent='Save Changes';
+  document.getElementById('fNI').value=menuFol.name;
+  document.getElementById('fmS').disabled=false;
+  buildFolMod();openM('folderModal');
+});
+document.getElementById('miDel').addEventListener('click',()=>{
+  closeM('fCM');if(!menuFol)return;
+  toDel={type:'folder',data:menuFol};
+  document.getElementById('delMsg').textContent=`Delete "${menuFol.name}" and ALL its documents?`;
+  openM('deleteModal');
+});
+document.getElementById('fCM').addEventListener('click',e=>{
+  if(e.target===document.getElementById('fCM'))document.getElementById('fCM').classList.remove('on');
+});
+document.querySelectorAll('.ov').forEach(ov=>ov.addEventListener('click',e=>{if(e.target===ov)closeM(ov.id);}));
+
+/* ═══════════════════════════════
+   BACK NAVIGATION
+   PDF → folder
+   Folder → home
+   Home + global search active → clear search
+   Home → double press to exit
+   Folder + folder search active → clear search
+═══════════════════════════════ */
+function closePdfViewer(){
+  if(pdfDoc){try{pdfDoc.destroy();}catch(e){}pdfDoc=null;}
+  pdfRendering=false;pdfScale=1;
+  pdfPages.style.transform='';
+  pdfSizer.style.width='';pdfSizer.style.height='';
+  pdfWrap.scrollLeft=0;pdfWrap.scrollTop=0;
+  pdfPages.innerHTML='';
+}
+function closeImgViewer(){
+  if(curBlobUrl){URL.revokeObjectURL(curBlobUrl);curBlobUrl=null;}
+  document.getElementById('vimg').src='';
+}
+
+document.getElementById('folderBack').addEventListener('click',()=>{curFolId=null;goScreen('homeScreen');});
+document.getElementById('pdfBack').addEventListener('click',()=>{closePdfViewer();goScreen('folderScreen');});
+document.getElementById('imgBack').addEventListener('click',()=>{closeImgViewer();goScreen('folderScreen');});
+
+history.pushState(null,'');
+window.addEventListener('popstate',()=>{
+  // 1. Close any open modal
+  const ov=document.querySelector('.ov.on');
+  if(ov){closeM(ov.id);history.pushState(null,'');return;}
+  const cm=document.querySelector('.cm.on');
+  if(cm){cm.classList.remove('on');history.pushState(null,'');return;}
+
+  const cur=document.querySelector('.screen.active');
+  if(!cur){history.pushState(null,'');return;}
+
+  // 2. PDF viewer → folder
+  if(cur.id==='pdfScreen'){
+    closePdfViewer();goScreen('folderScreen');
+    history.pushState(null,'');return;
+  }
+  // 3. Image viewer → folder
+  if(cur.id==='imgScreen'){
+    closeImgViewer();goScreen('folderScreen');
+    history.pushState(null,'');return;
+  }
+  // 4. Folder screen
+  if(cur.id==='folderScreen'){
+    // If folder search is active → clear search first
+    if(folderSearchActive){
+      document.getElementById('dSI').value='';
+      document.getElementById('dSC').classList.remove('on');
+      folderSearchActive=false;
+      renderDocs(curFolDocs);
+      history.pushState(null,'');return;
+    }
+    // Else go home
+    curFolId=null;goScreen('homeScreen');
+    history.pushState(null,'');return;
+  }
+  // 5. Home screen
+  if(cur.id==='homeScreen'){
+    // If global search active → clear it
+    if(globalSearchActive){
+      document.getElementById('gSI').value='';
+      document.getElementById('gSC').classList.remove('on');
+      document.getElementById('gResults').classList.remove('on');
+      document.getElementById('gResults').innerHTML='';
+      document.getElementById('folderSection').style.display='';
+      globalSearchActive=false;
+      history.pushState(null,'');return;
+    }
+    // Double press to exit
+    exitCnt++;
+    if(exitCnt>=2){
+      exitCnt=0;clearTimeout(exitTmr);
+      try{window.close();}catch(e){}
+    }else{
+      toast('Press back again to exit');
+      clearTimeout(exitTmr);
+      exitTmr=setTimeout(()=>{exitCnt=0;},2500);
+    }
+    history.pushState(null,'');
+  }
+});
+
+document.addEventListener('touchmove',e=>{
+  /* Only block global multi-touch outside of PDF/image viewers */
+  const pdfActive=document.getElementById('pdfScreen').classList.contains('active');
+  const imgActive=document.getElementById('imgScreen').classList.contains('active');
+  if(!pdfActive&&!imgActive&&e.touches.length>1)e.preventDefault();
+},{passive:false});
+
+/* ═══════════════════════════════
+   INIT
+═══════════════════════════════ */
+async function init(){
+  initStars();
+  initSplashStars();
+  try{
+    DB=await openDB();
+    const ex=await dbAll('folders');
+    if(!ex.length){
+      for(const f of DEFAULTS)
+        await dbAdd('folders',{name:f.name,icon:f.icon,ci:f.ci,ts:Date.now()});
+    }
+    await loadFolders();
+  }catch(err){
+    console.error(err);
+    toast('⚠️ Please use Chrome browser');
+  }
+  // Hide splash after 3.5 seconds (matches animation)
+  setTimeout(()=>{
+    const sp=document.getElementById('splash');
+    sp.classList.add('hiding');
+    setTimeout(()=>{if(sp.parentNode)sp.remove();},900);
+  },3500);
+}
+/* ═══════════════════════════════
+   SETTINGS MENU & THEME TOGGLE
+═══════════════════════════════ */
+(function(){
+  const btn=document.getElementById('themeToggle'); // hidden legacy
+  const smBtn=document.getElementById('settingsBtn');
+  const menu=document.getElementById('settingsMenu');
+  const smTheme=document.getElementById('smTheme');
+  const smIcon=document.getElementById('smThemeIcon');
+  const smLabel=document.getElementById('smThemeLabel');
+
+  function updateLabel(){
+    const isLight=document.body.classList.contains('light');
+    smIcon.textContent=isLight?'🌙':'☀️';
+    smLabel.textContent=isLight?'Switch to Dark':'Switch to Light';
+    if(btn)btn.textContent=isLight?'☀️':'🌙';
+  }
+
+  const saved=localStorage.getItem('paranchi-theme')||'dark';
+  if(saved==='light') document.body.classList.add('light');
+  updateLabel();
+
+  smBtn.addEventListener('click',e=>{
+    e.stopPropagation();
+    menu.classList.toggle('on');
+  });
+
+  /* Close menu when tapping outside */
+  menu.addEventListener('click',e=>{
+    if(e.target===menu) menu.classList.remove('on');
+  });
+
+  smTheme.addEventListener('click',()=>{
+    const isLight=document.body.classList.toggle('light');
+    localStorage.setItem('paranchi-theme',isLight?'light':'dark');
+    updateLabel();
+    menu.classList.remove('on');
+  });
+})();
+
+/* ═══════════════════════════════
+   KODULAR BACK BUTTON BRIDGE
+   Call window.androidBack() from
+   Kodular's WebView BackPressed block
+═══════════════════════════════ */
+window.androidBack=function(){
+  /* 1. Close any open modal overlay */
+  const ov=document.querySelector('.ov.on');
+  if(ov){closeM(ov.id);return;}
+  const cm=document.querySelector('.cm.on');
+  if(cm){cm.classList.remove('on');return;}
+
+  const cur=document.querySelector('.screen.active');
+  if(!cur)return;
+
+  /* 2. PDF → folder */
+  if(cur.id==='pdfScreen'){closePdfViewer();goScreen('folderScreen');return;}
+  /* 3. Image → folder */
+  if(cur.id==='imgScreen'){closeImgViewer();goScreen('folderScreen');return;}
+  /* 4. Folder screen */
+  if(cur.id==='folderScreen'){
+    if(folderSearchActive){
+      document.getElementById('dSI').value='';
+      document.getElementById('dSC').classList.remove('on');
+      folderSearchActive=false;renderDocs(curFolDocs);return;
+    }
+    curFolId=null;goScreen('homeScreen');return;
+  }
+  /* 5. Home screen */
+  if(cur.id==='homeScreen'){
+    if(globalSearchActive){
+      document.getElementById('gSI').value='';
+      document.getElementById('gSC').classList.remove('on');
+      document.getElementById('gResults').classList.remove('on');
+      document.getElementById('gResults').innerHTML='';
+      document.getElementById('folderSection').style.display='';
+      globalSearchActive=false;return;
+    }
+    exitCnt++;
+    if(exitCnt>=2){
+      exitCnt=0;clearTimeout(exitTmr);
+      /* Tell Kodular to close the app */
+      if(window.Android&&typeof window.Android.closeApp==='function')window.Android.closeApp();
+      else try{window.close();}catch(e){}
+    }else{
+      toast('Press back again to exit');
+      clearTimeout(exitTmr);
+      exitTmr=setTimeout(()=>{exitCnt=0;},2500);
+    }
+  }
+};
+
+init();
+
+/* ── Service Worker for offline ── */
+if('serviceWorker' in navigator){
+  const sw=`
+    const C='paranchi-v6';
+    const PRE=[
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js',
+      'https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap'
+    ];
+    self.addEventListener('install',e=>{
+      e.waitUntil(caches.open(C).then(c=>c.addAll(PRE).catch(()=>{})));
+      self.skipWaiting();
+    });
+    self.addEventListener('activate',e=>{
+      e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==C).map(k=>caches.delete(k)))));
+      self.clients.claim();
+    });
+    self.addEventListener('fetch',e=>{
+      e.respondWith(
+        caches.match(e.request).then(r=>{
+          if(r)return r;
+          return fetch(e.request).then(res=>{
+            if(res.ok){
+              const cl=res.clone();
+              caches.open(C).then(c=>c.put(e.request,cl));
+            }
+            return res;
+          }).catch(()=>caches.match(e.request));
+        })
+      );
+    });
+  `;
+  const blob=new Blob([sw],{type:'application/javascript'});
+  const url=URL.createObjectURL(blob);
+  navigator.serviceWorker.register(url).catch(()=>{});
+}
+</script>
+</body>
+</html>
