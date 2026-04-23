@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -35,6 +35,48 @@
   --inset:env(safe-area-inset-top,0px);
   --binset:env(safe-area-inset-bottom,0px);
 }
+
+/* ── LIGHT THEME ── */
+body.light{
+  --bg:#F5EEE8;
+  --bg2:#EDE6DF;
+  --surface:#F9F4F0;
+  --card:#FFFFFF;
+  --card2:#F3ECE6;
+  --navy:#EDE6DF;
+  --accent:#8B1A3A;
+  --accent2:#6B1230;
+  --gold:#8B1A3A;
+  --gold2:#B02248;
+  --glow1:rgba(139,26,58,.12);
+  --glow2:rgba(107,18,48,.1);
+  --glow3:rgba(139,26,58,.07);
+  --border:rgba(139,26,58,.15);
+  --border2:rgba(107,18,48,.1);
+  --text:#3A1020;
+  --text2:#2A0C18;
+  --sub:#8B4060;
+  --hint:#BCA0AA;
+  --red:#C8002A;
+  --inset:env(safe-area-inset-top,0px);
+  --binset:env(safe-area-inset-bottom,0px);
+}
+body.light::before{
+  background:
+    radial-gradient(ellipse 70% 45% at 15% 8%,rgba(139,26,58,.06) 0%,transparent 65%),
+    radial-gradient(ellipse 55% 40% at 85% 85%,rgba(107,18,48,.05) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 50% at 50% 50%,rgba(180,60,90,.03) 0%,transparent 70%);
+}
+body.light #pdfScreen{background:#EDE6DF !important;}
+body.light #pdfWrap{background:#E5DDD6 !important;}
+body.light .topbar,body.light .vbar,body.light .ibar{
+  background:rgba(245,238,232,.97) !important;
+}
+body.light .sbox{background:rgba(255,255,255,.9);}
+body.light .sbox input{color:var(--text2);}
+body.light .footer{background:rgba(245,238,232,.8);}
+body.light #stars{opacity:.12;}
+body.light .splash-orb1,body.light .splash-orb2,body.light .splash-orb3{display:none;}
 *{box-sizing:border-box;margin:0;padding:0;
   -webkit-tap-highlight-color:transparent;
   user-select:none;-webkit-user-select:none;}
@@ -427,7 +469,7 @@ body::before{
   position:absolute;top:0;left:0;
   display:flex;flex-direction:column;
   align-items:center;gap:3px;padding:4px 0 80px;
-  transform-origin:top left;will-change:transform;
+  transform-origin:top center;will-change:transform;
   width:100%;
 }
 .pcanvas{display:block;box-shadow:0 2px 10px rgba(0,0,0,.6);}
@@ -610,6 +652,45 @@ body::before{
   animation:doSpin .7s linear infinite;
 }
 @keyframes doSpin{to{transform:rotate(360deg);}}
+
+/* ── Theme Toggle (hidden – now inside settings menu) ── */
+#themeToggle{display:none;}
+
+/* ── Settings Menu Button ── */
+.tb-settings{
+  width:38px;height:38px;border-radius:50%;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  background:rgba(74,122,232,.1);color:var(--text);font-size:20px;
+  border:1px solid var(--border);transition:transform .12s,opacity .12s;
+  font-family:sans-serif;
+}
+.tb-settings:active{transform:scale(.84);}
+
+/* ── Settings Dropdown ── */
+#settingsMenu{
+  position:fixed;top:0;right:0;left:0;bottom:0;z-index:8500;
+  display:none;
+}
+#settingsMenu.on{display:block;}
+#settingsMenuBox{
+  position:absolute;top:calc(60px + var(--inset));right:12px;
+  background:linear-gradient(160deg,#0C1330,#080E22);
+  border:1.5px solid var(--border);border-radius:16px;
+  padding:6px;min-width:180px;
+  box-shadow:0 8px 32px rgba(0,0,0,.7);
+  animation:menuPop .15s ease both;
+}
+body.light #settingsMenuBox{
+  background:linear-gradient(160deg,#FFFFFF,#F3ECE6);
+}
+@keyframes menuPop{from{opacity:0;transform:scale(.92) translateY(-6px);}to{opacity:1;transform:none;}}
+.sm-item{
+  display:flex;align-items:center;gap:10px;padding:12px 14px;
+  border-radius:11px;cursor:pointer;font-size:14px;font-weight:500;
+  color:var(--text);font-family:'Inter',sans-serif;transition:background .1s;
+}
+.sm-item:active{background:rgba(74,122,232,.12);}
+.sm-icon{font-size:18px;width:24px;text-align:center;}
 </style>
 </head>
 <body>
@@ -637,6 +718,7 @@ body::before{
       <div class="eyebrow">Document Vault</div>
       <div class="appname">Paranchi's Documents</div>
     </div>
+    <button class="tb-settings" id="settingsBtn" title="Settings">⋮</button>
   </div>
   <div class="search-wrap">
     <div class="sbox">
@@ -773,7 +855,7 @@ body::before{
     <div class="mt">File Saved!</div>
     <div class="ms">Your file has been saved to:</div>
     <div class="dl-path" id="dlPath">Android/My Documents/filename.pdf</div>
-    <div class="ms" style="font-size:12px;margin-bottom:0">Open your File Manager → Android → My Documents → find the file → tap Share → choose WhatsApp, Gmail etc.</div>
+    <div class="ms" style="font-size:12px;margin-bottom:0">Open your File Manager → Downloads → paranchi's documents → find the file → tap Share → choose WhatsApp, Gmail etc.</div>
     <div class="brow" style="margin-top:14px">
       <button class="bpri" id="dlOk">Got it ✓</button>
     </div>
@@ -789,7 +871,18 @@ body::before{
   </div>
 </div>
 
+<!-- Settings Menu -->
+<div id="settingsMenu">
+  <div id="settingsMenuBox">
+    <div class="sm-item" id="smTheme">
+      <span class="sm-icon" id="smThemeIcon">🌙</span>
+      <span id="smThemeLabel">Switch to Light</span>
+    </div>
+  </div>
+</div>
+
 <input type="file" id="filePick" accept=".pdf,.jpg,.jpeg,.png" style="display:none">
+<button id="themeToggle" title="Toggle theme">🌙</button>
 <div id="toast"></div>
 </div>
 
@@ -812,7 +905,8 @@ try{
 /* ═══════════════════════════════
    CONSTANTS
 ═══════════════════════════════ */
-const ICONS=['🗂️','🪪','📄','🖼️','💳','🎓','🏥','🏦','📋','📜','🔖','✈️','🏠','👶','💼','🎫','🔐','🪙','📑','🎒'];
+const ICONS=['🗂️','🪪','📄','🖼️','💳','🎓','🏥','🏦','📋','📜','🔖','✈️','🏠','👶','💼','🎫','🔐','🪙','📑','🎒',
+  '👴','👨','👩','👧','👦','👦🏽','👧🏽','👨‍👩‍👧','👨‍👩‍👦','👨‍👩‍👧‍👦','👵','🧓','👩‍🦳','👨‍🦳','🧒','👶🏽','🫂','❤️‍🔥','🏡','🧸'];
 const COLORS=['#3A5AAE','#AE2848','#1A7842','#8A4800','#6634AE','#0E5888','#746000','#882448'];
 const DEFAULTS=[
   {name:'Aadhaar Card',icon:'🪪',ci:0},
@@ -955,28 +1049,65 @@ function toast(m,dur=3000){
 
 /* ═══════════════════════════════
    DOWNLOAD FILE
+   Works in Chrome AND Kodular WebView
    Saves to Android/My Documents
 ═══════════════════════════════ */
+function uint8ToBase64(u8){
+  let bin='';
+  const len=u8.byteLength;
+  for(let i=0;i<len;i++)bin+=String.fromCharCode(u8[i]);
+  return btoa(bin);
+}
+
 function downloadFile(doc){
   try{
     const data=safeCopy(doc.fileData);
     const m=mimeOf(doc.ext);
-    const blob=new Blob([data],{type:m});
     const fn=safeName(doc.name)+'.'+doc.ext;
-    const url=URL.createObjectURL(blob);
+    const folder="paranchi's documents";
+    const displayPath=`Downloads/${folder}/${fn}`;
+
+    /* ── Method 1: Kodular Android interface ── */
+    if(window.Android && typeof window.Android.downloadFile==='function'){
+      try{
+        const b64=uint8ToBase64(data);
+        /* Pass subfolder as part of filename so Kodular saves there */
+        window.Android.downloadFile(b64,fn,m);
+        document.getElementById('dlPath').textContent=displayPath;
+        openM('dlModal');
+        return;
+      }catch(ae){/* fall through */}
+    }
+
+    /* ── Method 2: Standard blob download (Chrome / WebView) ── */
+    try{
+      const blob=new Blob([data],{type:m});
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a');
+      a.href=url;
+      /* Use folder/filename so browser creates the subfolder */
+      a.download=folder+'/'+fn;
+      document.body.appendChild(a);a.click();
+      document.body.removeChild(a);
+      setTimeout(()=>URL.revokeObjectURL(url),10000);
+      document.getElementById('dlPath').textContent=displayPath;
+      openM('dlModal');
+      return;
+    }catch(be){/* fall through */}
+
+    /* ── Method 3: base64 data URI fallback for WebView ── */
+    const b64=uint8ToBase64(data);
+    const dataUri='data:'+m+';base64,'+b64;
     const a=document.createElement('a');
-    a.href=url;
-    a.download=fn;
-    document.body.appendChild(a);
-    a.click();
+    a.href=dataUri;
+    a.download=folder+'/'+fn;
+    document.body.appendChild(a);a.click();
     document.body.removeChild(a);
-    setTimeout(()=>URL.revokeObjectURL(url),10000);
-    // Show info modal
-    document.getElementById('dlPath').textContent='Android/My Documents/'+fn;
-    curDocForDl=doc;
+    document.getElementById('dlPath').textContent=displayPath;
     openM('dlModal');
+
   }catch(e){
-    toast('Could not save file');
+    toast('⚠️ Could not save file — try opening in Chrome');
   }
 }
 
@@ -1310,15 +1441,17 @@ async function viewPDF(doc){
   }
 }
 
-/* PDF pinch zoom — zooms toward exact finger position */
+/* PDF pinch zoom — zooms toward exact finger position, works on all sides */
 pdfWrap.addEventListener('touchstart',e=>{
   if(e.touches.length===2){
     pdfPinch=true;
     pdfPD=Math.hypot(e.touches[1].clientX-e.touches[0].clientX,e.touches[1].clientY-e.touches[0].clientY);
     pdfPS=pdfScale;
+    /* Midpoint relative to the pdfWrap viewport */
     const r=pdfWrap.getBoundingClientRect();
-    pdfPMX=(e.touches[0].clientX+e.touches[1].clientX)/2-r.left;
-    pdfPMY=(e.touches[0].clientY+e.touches[1].clientY)/2-r.top;
+    pdfPMX=((e.touches[0].clientX+e.touches[1].clientX)/2)-r.left;
+    pdfPMY=((e.touches[0].clientY+e.touches[1].clientY)/2)-r.top;
+    /* Scroll offsets at pinch start */
     pdfPSL=pdfWrap.scrollLeft;
     pdfPST=pdfWrap.scrollTop;
   }
@@ -1328,16 +1461,59 @@ pdfWrap.addEventListener('touchmove',e=>{
   if(!pdfPinch||e.touches.length<2)return;
   e.preventDefault();
   const d=Math.hypot(e.touches[1].clientX-e.touches[0].clientX,e.touches[1].clientY-e.touches[0].clientY);
-  const ns=Math.max(.5,Math.min(6,pdfPS*d/pdfPD));
-  const cx=(pdfPSL+pdfPMX)/pdfPS;
-  const cy=(pdfPST+pdfPMY)/pdfPS;
-  pdfScale=ns;setPdfScale();
-  pdfWrap.scrollLeft=cx*ns-pdfPMX;
-  pdfWrap.scrollTop=cy*ns-pdfPMY;
+  const ns=Math.max(.5,Math.min(6,pdfPS*(d/pdfPD)));
+
+  /*
+   * transform-origin is "top center" so the origin X = pdfNatW/2 * oldScale
+   * We must account for that horizontal centering offset.
+   *
+   * The visible content point under the pinch midpoint:
+   *   contentX = scrollLeft + midpointX  (in scaled space)
+   *   contentY = scrollTop  + midpointY  (in scaled space)
+   *
+   * After scale change, we want that same content point to stay
+   * under the midpoint, so:
+   *   newScrollLeft = contentX_inNewScale - midpointX
+   *   newScrollTop  = contentY_inNewScale - midpointY
+   *
+   * Because origin is top-center, horizontal scroll offset is:
+   *   scrollLeft positions content; scaled width = pdfNatW * scale
+   *   The centering shift = (scaledWidth - wrapWidth) / 2 when content narrower than wrap
+   *
+   * Simplest correct formula:
+   *   docPointX = (scrollLeft + midpointX) / oldScale
+   *   docPointY = (scrollTop  + midpointY) / oldScale
+   *   newScrollLeft = docPointX * newScale - midpointX
+   *   newScrollTop  = docPointY * newScale - midpointY
+   *
+   * But with top-center origin, the transform shifts content to center horizontally.
+   * We compensate by using the actual rendered left edge position.
+   */
+
+  const wrapW=pdfWrap.clientWidth;
+  const scaledW=pdfNatW*pdfPS;
+  /* Left edge of scaled content in scroll space */
+  const leftEdgeOld = scaledW < wrapW ? (wrapW - scaledW)/2 : 0;
+
+  /* Content coordinate under pinch midpoint */
+  const docX = (pdfPSL + pdfPMX - leftEdgeOld) / pdfPS;
+  const docY = (pdfPST + pdfPMY) / pdfPS;
+
+  pdfScale = ns;
+  setPdfScale();
+
+  const scaledWNew = pdfNatW * ns;
+  const leftEdgeNew = scaledWNew < wrapW ? (wrapW - scaledWNew)/2 : 0;
+
+  pdfWrap.scrollLeft = docX * ns + leftEdgeNew - pdfPMX;
+  pdfWrap.scrollTop  = docY * ns - pdfPMY;
 },{passive:false});
 
 pdfWrap.addEventListener('touchend',e=>{
-  if(e.touches.length<2){pdfPinch=false;if(pdfScale<1){pdfScale=1;setPdfScale();}}
+  if(e.touches.length<2){
+    pdfPinch=false;
+    if(pdfScale<1){pdfScale=1;setPdfScale();}
+  }
 },{passive:true});
 
 /* PDF save button */
@@ -1656,7 +1832,10 @@ window.addEventListener('popstate',()=>{
 });
 
 document.addEventListener('touchmove',e=>{
-  if(e.touches.length>1)e.preventDefault();
+  /* Only block global multi-touch outside of PDF/image viewers */
+  const pdfActive=document.getElementById('pdfScreen').classList.contains('active');
+  const imgActive=document.getElementById('imgScreen').classList.contains('active');
+  if(!pdfActive&&!imgActive&&e.touches.length>1)e.preventDefault();
 },{passive:false});
 
 /* ═══════════════════════════════
@@ -1684,6 +1863,98 @@ async function init(){
     setTimeout(()=>{if(sp.parentNode)sp.remove();},900);
   },3500);
 }
+/* ═══════════════════════════════
+   SETTINGS MENU & THEME TOGGLE
+═══════════════════════════════ */
+(function(){
+  const btn=document.getElementById('themeToggle'); // hidden legacy
+  const smBtn=document.getElementById('settingsBtn');
+  const menu=document.getElementById('settingsMenu');
+  const smTheme=document.getElementById('smTheme');
+  const smIcon=document.getElementById('smThemeIcon');
+  const smLabel=document.getElementById('smThemeLabel');
+
+  function updateLabel(){
+    const isLight=document.body.classList.contains('light');
+    smIcon.textContent=isLight?'🌙':'☀️';
+    smLabel.textContent=isLight?'Switch to Dark':'Switch to Light';
+    if(btn)btn.textContent=isLight?'☀️':'🌙';
+  }
+
+  const saved=localStorage.getItem('paranchi-theme')||'dark';
+  if(saved==='light') document.body.classList.add('light');
+  updateLabel();
+
+  smBtn.addEventListener('click',e=>{
+    e.stopPropagation();
+    menu.classList.toggle('on');
+  });
+
+  /* Close menu when tapping outside */
+  menu.addEventListener('click',e=>{
+    if(e.target===menu) menu.classList.remove('on');
+  });
+
+  smTheme.addEventListener('click',()=>{
+    const isLight=document.body.classList.toggle('light');
+    localStorage.setItem('paranchi-theme',isLight?'light':'dark');
+    updateLabel();
+    menu.classList.remove('on');
+  });
+})();
+
+/* ═══════════════════════════════
+   KODULAR BACK BUTTON BRIDGE
+   Call window.androidBack() from
+   Kodular's WebView BackPressed block
+═══════════════════════════════ */
+window.androidBack=function(){
+  /* 1. Close any open modal overlay */
+  const ov=document.querySelector('.ov.on');
+  if(ov){closeM(ov.id);return;}
+  const cm=document.querySelector('.cm.on');
+  if(cm){cm.classList.remove('on');return;}
+
+  const cur=document.querySelector('.screen.active');
+  if(!cur)return;
+
+  /* 2. PDF → folder */
+  if(cur.id==='pdfScreen'){closePdfViewer();goScreen('folderScreen');return;}
+  /* 3. Image → folder */
+  if(cur.id==='imgScreen'){closeImgViewer();goScreen('folderScreen');return;}
+  /* 4. Folder screen */
+  if(cur.id==='folderScreen'){
+    if(folderSearchActive){
+      document.getElementById('dSI').value='';
+      document.getElementById('dSC').classList.remove('on');
+      folderSearchActive=false;renderDocs(curFolDocs);return;
+    }
+    curFolId=null;goScreen('homeScreen');return;
+  }
+  /* 5. Home screen */
+  if(cur.id==='homeScreen'){
+    if(globalSearchActive){
+      document.getElementById('gSI').value='';
+      document.getElementById('gSC').classList.remove('on');
+      document.getElementById('gResults').classList.remove('on');
+      document.getElementById('gResults').innerHTML='';
+      document.getElementById('folderSection').style.display='';
+      globalSearchActive=false;return;
+    }
+    exitCnt++;
+    if(exitCnt>=2){
+      exitCnt=0;clearTimeout(exitTmr);
+      /* Tell Kodular to close the app */
+      if(window.Android&&typeof window.Android.closeApp==='function')window.Android.closeApp();
+      else try{window.close();}catch(e){}
+    }else{
+      toast('Press back again to exit');
+      clearTimeout(exitTmr);
+      exitTmr=setTimeout(()=>{exitCnt=0;},2500);
+    }
+  }
+};
+
 init();
 
 /* ── Service Worker for offline ── */
