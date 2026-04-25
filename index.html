@@ -2,15 +2,18 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,user-scalable=yes,viewport-fit=cover">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#04060F">
+<meta name="theme-color" id="themeColorMeta" content="#04060F">
 <title>Paranchi's Documents</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
+/* ══════════════════════════════
+   DARK THEME (default)
+══════════════════════════════ */
 :root{
   --bg:#04060F;
   --bg2:#070B18;
@@ -34,56 +37,64 @@
   --red:#E84060;
   --inset:env(safe-area-inset-top,0px);
   --binset:env(safe-area-inset-bottom,0px);
+  --splash-bg1:#0C1440;
+  --splash-bg2:#04060F;
+  --topbar-bg:rgba(4,6,15,.96);
+  --vbar-bg:#0A0C14;
+  --pdf-bg:#191C24;
+  --modal-bg:linear-gradient(160deg,#0C1330 0%,#080E22 100%);
+  --cm-bg:linear-gradient(160deg,#0C1330,#080E22);
+  --footer-bg:rgba(4,6,15,.7);
+  --sbox-bg:rgba(10,16,32,.9);
+  --toast-bg:linear-gradient(135deg,rgba(12,19,48,.97),rgba(8,14,34,.97));
+  --inp-bg:rgba(4,6,15,.9);
 }
 
-/* ── LIGHT THEME ── */
+/* ══════════════════════════════
+   LIGHT THEME
+══════════════════════════════ */
 body.light{
-  --bg:#F5EEE8;
-  --bg2:#EDE6DF;
-  --surface:#F9F4F0;
+  --bg:#F5F0F0;
+  --bg2:#EDE6E6;
+  --surface:#FDFAFA;
   --card:#FFFFFF;
-  --card2:#F3ECE6;
-  --navy:#EDE6DF;
-  --accent:#8B1A3A;
-  --accent2:#6B1230;
-  --gold:#8B1A3A;
-  --gold2:#B02248;
-  --glow1:rgba(139,26,58,.12);
-  --glow2:rgba(107,18,48,.1);
-  --glow3:rgba(139,26,58,.07);
-  --border:rgba(139,26,58,.15);
-  --border2:rgba(107,18,48,.1);
-  --text:#3A1020;
-  --text2:#2A0C18;
-  --sub:#8B4060;
-  --hint:#BCA0AA;
-  --red:#C8002A;
-  --inset:env(safe-area-inset-top,0px);
-  --binset:env(safe-area-inset-bottom,0px);
+  --card2:#F8F3F3;
+  --navy:#EDE4E4;
+  --accent:#7B1832;
+  --accent2:#9B2040;
+  --gold:#8B1428;
+  --gold2:#B01E38;
+  --glow1:rgba(123,24,50,.15);
+  --glow2:rgba(155,32,64,.12);
+  --glow3:rgba(139,20,40,.08);
+  --border:rgba(123,24,50,.18);
+  --border2:rgba(155,32,64,.12);
+  --text:#4A1020;
+  --text2:#2A0810;
+  --sub:#8B3040;
+  --hint:#C89098;
+  --red:#C01830;
+  --splash-bg1:#F0E0E4;
+  --splash-bg2:#F5F0F0;
+  --topbar-bg:rgba(253,250,250,.97);
+  --vbar-bg:#FDFAFA;
+  --pdf-bg:#F0ECEC;
+  --modal-bg:linear-gradient(160deg,#FFFFFF 0%,#FDF8F8 100%);
+  --cm-bg:linear-gradient(160deg,#FFFFFF,#FDF8F8);
+  --footer-bg:rgba(253,250,250,.85);
+  --sbox-bg:rgba(255,255,255,.95);
+  --toast-bg:linear-gradient(135deg,rgba(255,250,250,.97),rgba(253,244,244,.97));
+  --inp-bg:rgba(255,255,255,.95);
 }
-body.light::before{
-  background:
-    radial-gradient(ellipse 70% 45% at 15% 8%,rgba(139,26,58,.06) 0%,transparent 65%),
-    radial-gradient(ellipse 55% 40% at 85% 85%,rgba(107,18,48,.05) 0%,transparent 60%),
-    radial-gradient(ellipse 40% 50% at 50% 50%,rgba(180,60,90,.03) 0%,transparent 70%);
-}
-body.light #pdfScreen{background:#EDE6DF !important;}
-body.light #pdfWrap{background:#E5DDD6 !important;}
-body.light .topbar,body.light .vbar,body.light .ibar{
-  background:rgba(245,238,232,.97) !important;
-}
-body.light .sbox{background:rgba(255,255,255,.9);}
-body.light .sbox input{color:var(--text2);}
-body.light .footer{background:rgba(245,238,232,.8);}
-body.light #stars{opacity:.12;}
-body.light .splash-orb1,body.light .splash-orb2,body.light .splash-orb3{display:none;}
+
 *{box-sizing:border-box;margin:0;padding:0;
   -webkit-tap-highlight-color:transparent;
   user-select:none;-webkit-user-select:none;}
 html,body{width:100%;height:100%;overflow:hidden;
   background:var(--bg);color:var(--text);
   font-family:'Inter',sans-serif;
-  -webkit-font-smoothing:antialiased;}
+  -webkit-font-smoothing:antialiased;
+  transition:background .3s,color .3s;}
 
 /* ── Mystical BG ── */
 body::before{
@@ -92,10 +103,18 @@ body::before{
     radial-gradient(ellipse 70% 45% at 15% 8%,rgba(74,122,232,.09) 0%,transparent 65%),
     radial-gradient(ellipse 55% 40% at 85% 85%,rgba(123,94,232,.07) 0%,transparent 60%),
     radial-gradient(ellipse 40% 50% at 50% 50%,rgba(200,144,10,.03) 0%,transparent 70%);
+  transition:opacity .3s;
+}
+body.light::before{
+  background:
+    radial-gradient(ellipse 70% 45% at 15% 8%,rgba(123,24,50,.06) 0%,transparent 65%),
+    radial-gradient(ellipse 55% 40% at 85% 85%,rgba(155,32,64,.04) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 50% at 50% 50%,rgba(139,20,40,.02) 0%,transparent 70%);
 }
 
 /* ── Stars canvas ── */
 #stars{position:fixed;inset:0;z-index:0;pointer-events:none;}
+body.light #stars{opacity:.2;}
 
 /* ── App shell ── */
 #app{position:relative;width:100%;height:100dvh;overflow:hidden;z-index:1;}
@@ -106,14 +125,45 @@ body::before{
   -webkit-overflow-scrolling:touch;overscroll-behavior:contain;}
 .scroll::-webkit-scrollbar{display:none;}
 
-/* ═══════════════════════
-   SPLASH SCREEN
-═══════════════════════ */
+/* ══════════════════════════════
+   THEME TOGGLE BUTTON
+══════════════════════════════ */
+#themeToggle{
+  position:fixed;bottom:calc(90px + var(--binset));right:14px;
+  width:46px;height:46px;border-radius:50%;border:none;
+  cursor:pointer;z-index:800;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;
+  background:var(--card);
+  border:1.5px solid var(--border);
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  transition:transform .12s,background .3s,border-color .3s,box-shadow .3s;
+  overflow:hidden;
+}
+#themeToggle:active{transform:scale(.85);}
+.theme-icon-wrap{
+  position:relative;width:24px;height:24px;
+}
+/* Dark icon = moon half, Light icon = sun half */
+.ti-dark,.ti-light{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity .3s,transform .3s;
+}
+.ti-dark{opacity:1;transform:rotate(0deg);}
+.ti-light{opacity:0;transform:rotate(90deg);}
+body.light .ti-dark{opacity:0;transform:rotate(-90deg);}
+body.light .ti-light{opacity:1;transform:rotate(0deg);}
+
+/* ══════════════════════════════
+   SPLASH SCREEN - DARK
+══════════════════════════════ */
 #splash{
   position:fixed;inset:0;z-index:9999;
-  background:radial-gradient(ellipse at 50% 40%,#0C1440 0%,#04060F 65%);
+  background:radial-gradient(ellipse at 50% 40%,var(--splash-bg1) 0%,var(--splash-bg2) 65%);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:0;overflow:hidden;
+  transition:background .3s;
 }
 #splash.hiding{animation:splashOut .8s ease forwards;}
 @keyframes splashOut{to{opacity:0;transform:scale(1.05);}}
@@ -122,9 +172,10 @@ body::before{
 .splash-stars{position:absolute;inset:0;overflow:hidden;}
 .ss{position:absolute;border-radius:50%;background:#fff;
   animation:ssTw var(--d) var(--dl) infinite;}
+body.light .ss{background:#7B1832;}
 @keyframes ssTw{0%,100%{opacity:var(--a);}50%{opacity:var(--b);transform:scale(1.6);}}
 
-/* Glow orbs */
+/* Glow orbs dark */
 .splash-orb1{
   position:absolute;width:300px;height:300px;border-radius:50%;
   background:radial-gradient(circle,rgba(74,122,232,.18) 0%,transparent 70%);
@@ -140,6 +191,10 @@ body::before{
   background:radial-gradient(circle,rgba(200,144,10,.08) 0%,transparent 70%);
   top:45%;left:30%;animation:orbFloat 7s ease-in-out infinite 2s;
 }
+/* Glow orbs light */
+body.light .splash-orb1{background:radial-gradient(circle,rgba(123,24,50,.12) 0%,transparent 70%);}
+body.light .splash-orb2{background:radial-gradient(circle,rgba(155,32,64,.1) 0%,transparent 70%);}
+body.light .splash-orb3{background:radial-gradient(circle,rgba(139,20,40,.06) 0%,transparent 70%);}
 @keyframes orbFloat{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-25px) scale(1.08);}}
 
 /* Logo */
@@ -148,6 +203,9 @@ body::before{
   filter:drop-shadow(0 0 30px rgba(74,122,232,.6)) drop-shadow(0 0 60px rgba(123,94,232,.4));
   animation:logoGlow 2.5s ease-in-out infinite,splashFadeIn .8s ease .1s both;
   position:relative;z-index:1;margin-bottom:20px;
+}
+body.light .splash-logo{
+  filter:drop-shadow(0 0 30px rgba(123,24,50,.4)) drop-shadow(0 0 60px rgba(155,32,64,.25));
 }
 @keyframes logoGlow{
   0%,100%{filter:drop-shadow(0 0 20px rgba(74,122,232,.5)) drop-shadow(0 0 40px rgba(123,94,232,.3));}
@@ -165,13 +223,16 @@ body::before{
   animation:splashFadeIn .8s ease .3s both;
   position:relative;z-index:1;margin-bottom:8px;
 }
+body.light .splash-name{
+  background:linear-gradient(135deg,#7B1832 0%,#A02040 45%,#C82840 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 20px rgba(123,24,50,.3));
+}
 .splash-sub{
   font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--hint);
   animation:splashFadeIn .8s ease .5s both;position:relative;z-index:1;
   margin-bottom:32px;
 }
-
-/* Divider line */
 .splash-line{
   width:0;height:1px;
   background:linear-gradient(90deg,transparent,var(--accent),var(--accent2),transparent);
@@ -179,8 +240,6 @@ body::before{
   position:relative;z-index:1;margin-bottom:32px;
 }
 @keyframes lineGrow{to{width:180px;}}
-
-/* Made by */
 .splash-made{
   font-size:12px;color:var(--sub);letter-spacing:.5px;
   animation:splashFadeIn .8s ease .8s both;position:relative;z-index:1;
@@ -191,12 +250,11 @@ body::before{
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
   font-weight:600;
 }
-
-/* Progress bar */
 .splash-progress{
   width:200px;height:2px;background:rgba(74,122,232,.12);
   border-radius:2px;overflow:hidden;position:relative;z-index:1;
 }
+body.light .splash-progress{background:rgba(123,24,50,.12);}
 .splash-progress-fill{
   height:100%;width:0;border-radius:2px;
   background:linear-gradient(90deg,var(--accent),var(--accent2),var(--gold2));
@@ -204,16 +262,17 @@ body::before{
 }
 @keyframes progressFill{0%{width:0;}60%{width:75%;}100%{width:100%;}}
 
-/* ═══════════════════════
+/* ══════════════════════════════
    TOP BAR
-═══════════════════════ */
+══════════════════════════════ */
 .topbar{
   flex-shrink:0;z-index:2;
-  background:rgba(4,6,15,.96);
+  background:var(--topbar-bg);
   padding:calc(11px + var(--inset)) 14px 11px;
   display:flex;align-items:center;gap:10px;
   border-bottom:1px solid var(--border);
   position:relative;
+  transition:background .3s,border-color .3s;
 }
 .topbar::after{
   content:'';position:absolute;bottom:0;left:12%;right:12%;height:1px;
@@ -232,6 +291,10 @@ body::before{
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
   display:inline-block;
 }
+body.light .appname{
+  background:linear-gradient(135deg,#7B1832 0%,#A02040 50%,#C82840 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
 .tb-btn{
   width:40px;height:40px;border-radius:50%;border:none;cursor:pointer;
   display:flex;align-items:center;justify-content:center;flex-shrink:0;
@@ -242,22 +305,24 @@ body::before{
   background:rgba(74,122,232,.12);color:var(--text);font-size:26px;
   border:1px solid var(--border);
 }
+body.light .btn-back{background:rgba(123,24,50,.1);}
 .btn-add{
   background:linear-gradient(135deg,var(--accent),var(--accent2));
   color:#fff;font-size:24px;
   box-shadow:0 0 20px var(--glow1),0 0 10px var(--glow2);
 }
 
-/* ═══════════════════════
+/* ══════════════════════════════
    SEARCH BOX
-═══════════════════════ */
+══════════════════════════════ */
 .search-wrap{flex-shrink:0;padding:10px 13px 6px;}
 .sbox{
   display:flex;align-items:center;gap:9px;
-  background:rgba(10,16,32,.9);border:1.5px solid var(--border);
-  border-radius:14px;padding:10px 14px;transition:border-color .2s;
+  background:var(--sbox-bg);border:1.5px solid var(--border);
+  border-radius:14px;padding:10px 14px;transition:border-color .2s,background .3s;
 }
 .sbox:focus-within{border-color:rgba(74,122,232,.5);}
+body.light .sbox:focus-within{border-color:rgba(123,24,50,.5);}
 .sbox svg{flex-shrink:0;}
 .sbox input{
   flex:1;background:none;border:none;outline:none;
@@ -269,9 +334,9 @@ body::before{
   cursor:pointer;line-height:1;display:none;padding:0 2px;}
 .sclr.on{display:block;}
 
-/* ═══════════════════════
+/* ══════════════════════════════
    GLOBAL SEARCH RESULTS
-═══════════════════════ */
+══════════════════════════════ */
 #gResults{display:none;padding:6px 12px 20px;}
 #gResults.on{display:block;}
 .gr-lbl{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
@@ -280,7 +345,7 @@ body::before{
   display:flex;align-items:center;gap:12px;
   background:var(--card);border:1.5px solid var(--border);
   border-radius:14px;padding:11px 13px;margin-bottom:8px;
-  cursor:pointer;transition:transform .1s;
+  cursor:pointer;transition:transform .1s,background .3s;
 }
 .gr-item:active{transform:scale(.97);}
 .gr-th{
@@ -302,9 +367,9 @@ body::before{
 .gbd-img{background:rgba(74,122,232,.8);}
 .gr-empty{text-align:center;padding:40px 20px;color:var(--hint);font-size:14px;}
 
-/* ═══════════════════════
+/* ══════════════════════════════
    FOLDER SECTION
-═══════════════════════ */
+══════════════════════════════ */
 .sec-lbl{
   padding:14px 15px 8px;font-size:10px;font-weight:700;
   letter-spacing:2.5px;text-transform:uppercase;color:var(--sub);
@@ -316,9 +381,10 @@ body::before{
 .fc{
   background:var(--card);border:1.5px solid var(--border);
   border-radius:22px;padding:17px 13px 15px;cursor:pointer;
-  position:relative;animation:fadeUp .3s ease both;transition:transform .12s;
-  box-shadow:0 4px 24px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.03);
+  position:relative;animation:fadeUp .3s ease both;transition:transform .12s,background .3s,border-color .3s;
+  box-shadow:0 4px 24px rgba(0,0,0,.15),inset 0 1px 0 rgba(255,255,255,.03);
 }
+body.light .fc{box-shadow:0 4px 24px rgba(123,24,50,.08),inset 0 1px 0 rgba(255,255,255,.5);}
 .fc:active{transform:scale(.93);}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
 .fi{
@@ -345,19 +411,21 @@ body::before{
   color:var(--sub);font-size:14px;font-weight:500;
   font-family:'Inter',sans-serif;transition:all .15s;
 }
+body.light .btn-nf{border-color:rgba(123,24,50,.18);}
 .btn-nf:active{background:rgba(74,122,232,.07);border-color:rgba(74,122,232,.4);}
+body.light .btn-nf:active{background:rgba(123,24,50,.06);border-color:rgba(123,24,50,.35);}
 
-/* ═══════════════════════
+/* ══════════════════════════════
    DOC COUNT
-═══════════════════════ */
+══════════════════════════════ */
 .doc-count{
   flex-shrink:0;padding:2px 15px 5px;
   font-size:11px;color:var(--hint);
 }
 
-/* ═══════════════════════
+/* ══════════════════════════════
    DOC GRID
-═══════════════════════ */
+══════════════════════════════ */
 #docGrid{
   display:grid;grid-template-columns:1fr 1fr;
   gap:11px;padding:6px 11px 20px;
@@ -365,9 +433,10 @@ body::before{
 .dc{
   background:var(--card);border:1.5px solid var(--border);
   border-radius:18px;overflow:hidden;cursor:pointer;
-  animation:fadeUp .28s ease both;transition:transform .12s;
-  box-shadow:0 3px 16px rgba(0,0,0,.5);
+  animation:fadeUp .28s ease both;transition:transform .12s,background .3s,border-color .3s;
+  box-shadow:0 3px 16px rgba(0,0,0,.2);
 }
+body.light .dc{box-shadow:0 3px 16px rgba(123,24,50,.06);}
 .dc:active{transform:scale(.94);}
 .ct{
   width:100%;aspect-ratio:3/4;background:var(--card2);
@@ -379,6 +448,7 @@ body::before{
   align-items:center;justify-content:center;gap:8px;
   background:linear-gradient(150deg,var(--card2),rgba(16,24,52,.95));
 }
+body.light .pph{background:linear-gradient(150deg,var(--card2),rgba(240,232,232,.95));}
 .pph-i{font-size:34px;}
 .pph-t{font-size:9px;letter-spacing:2px;color:var(--hint);text-transform:uppercase;}
 .tb-badge{
@@ -389,15 +459,16 @@ body::before{
 .tb-pdf{background:rgba(232,64,96,.85);}
 .tb-jpg,.tb-jpeg,.tb-png{background:rgba(74,122,232,.85);}
 
-/* Download button on card */
-.dl-btn{
+/* Share button on card (replaces download) */
+.sh-btn{
   position:absolute;top:6px;right:6px;width:30px;height:30px;
   border-radius:50%;background:rgba(4,6,15,.75);
   backdrop-filter:blur(8px);border:1px solid rgba(74,122,232,.2);
   cursor:pointer;display:flex;align-items:center;justify-content:center;
   transition:transform .1s;
 }
-.dl-btn:active{transform:scale(.84);}
+body.light .sh-btn{background:rgba(255,255,255,.85);border-color:rgba(123,24,50,.2);}
+.sh-btn:active{transform:scale(.84);}
 
 .di{padding:9px 10px 11px;}
 .dn{
@@ -407,9 +478,9 @@ body::before{
 }
 .dm{font-size:10px;color:var(--hint);}
 
-/* ═══════════════════════
+/* ══════════════════════════════
    EMPTY STATE
-═══════════════════════ */
+══════════════════════════════ */
 .emp{
   display:none;flex-direction:column;align-items:center;
   justify-content:center;padding:60px 24px;gap:12px;text-align:center;
@@ -419,64 +490,72 @@ body::before{
 .emp-t{font-size:17px;font-weight:700;color:var(--sub);}
 .emp-s{font-size:13px;color:var(--hint);line-height:1.65;max-width:200px;}
 
-/* ═══════════════════════
+/* ══════════════════════════════
    FOOTER
-═══════════════════════ */
+══════════════════════════════ */
 .footer{
   flex-shrink:0;text-align:center;
   padding:9px 14px calc(9px + var(--binset));
   font-size:11px;color:var(--hint);letter-spacing:.5px;
   border-top:1px solid rgba(74,122,232,.07);
-  background:rgba(4,6,15,.7);
+  background:var(--footer-bg);
+  transition:background .3s;
 }
+body.light .footer{border-top:1px solid rgba(123,24,50,.07);}
 .footer span{
   background:linear-gradient(90deg,var(--accent),var(--accent2));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
   font-weight:600;
 }
 
-/* ═══════════════════════
+/* ══════════════════════════════
    PDF VIEWER
-═══════════════════════ */
+══════════════════════════════ */
 #pdfScreen{background:#111418;}
+body.light #pdfScreen{background:#EDE8E8;}
 .vbar{
   flex-shrink:0;display:flex;align-items:center;gap:8px;
   padding:calc(10px + var(--inset)) 8px 10px;
-  background:#0A0C14;border-bottom:1px solid rgba(255,255,255,.07);
+  background:var(--vbar-bg);border-bottom:1px solid rgba(255,255,255,.07);
+  transition:background .3s;
 }
+body.light .vbar{border-bottom:1px solid rgba(123,24,50,.12);}
 .vt{
-  flex:1;color:#E0E8FF;font-size:14px;font-weight:600;
+  flex:1;color:var(--text2);font-size:14px;font-weight:600;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
   font-family:'Inter',sans-serif;
 }
-.v-info{font-size:11px;color:#444;white-space:nowrap;}
-.v-dl{
+.v-info{font-size:11px;color:var(--hint);white-space:nowrap;}
+.v-share{
   background:rgba(74,122,232,.15);border:1px solid rgba(74,122,232,.25);
-  color:#A0B8E8;font-size:12px;cursor:pointer;
+  color:var(--accent);font-size:12px;cursor:pointer;
   padding:7px 12px;border-radius:10px;white-space:nowrap;
-  font-family:'Inter',sans-serif;
+  font-family:'Inter',sans-serif;display:flex;align-items:center;gap:5px;
 }
-.v-dl:active{background:rgba(74,122,232,.25);}
+body.light .v-share{background:rgba(123,24,50,.1);border-color:rgba(123,24,50,.2);}
+.v-share:active{background:rgba(74,122,232,.25);}
 
-/* PDF scroll area */
+/* PDF scroll area — key fix for pinch zoom centering */
 #pdfWrap{
   flex:1;overflow:auto;-webkit-overflow-scrolling:touch;
-  background:#191C24;position:relative;
+  background:var(--pdf-bg);position:relative;
+  touch-action:pan-x pan-y;
+  transition:background .3s;
 }
 #pdfWrap::-webkit-scrollbar{display:none;}
-#pdfSizer{position:relative;min-width:100%;}
+#pdfSizer{position:relative;min-width:100%;min-height:100%;}
 #pdfPages{
   position:absolute;top:0;left:0;
   display:flex;flex-direction:column;
   align-items:center;gap:3px;padding:4px 0 80px;
-  transform-origin:top center;will-change:transform;
+  transform-origin:top left;will-change:transform;
   width:100%;
 }
-.pcanvas{display:block;box-shadow:0 2px 10px rgba(0,0,0,.6);}
+.pcanvas{display:block;box-shadow:0 2px 10px rgba(0,0,0,.4);}
 #pdfLoader{
   display:flex;flex-direction:column;align-items:center;
   justify-content:center;gap:14px;padding:100px 20px;
-  color:#555;font-size:14px;min-height:300px;
+  color:var(--hint);font-size:14px;min-height:300px;
 }
 .perr{
   color:#FF8A9B;text-align:center;padding:28px 20px;font-size:14px;
@@ -489,18 +568,21 @@ body::before{
   font-size:11px;padding:6px 14px;border-radius:18px;
   pointer-events:none;transition:opacity .3s;white-space:nowrap;z-index:50;
 }
+body.light #pdfZH{background:rgba(255,255,255,.8);color:rgba(74,24,50,.55);}
 #pdfZH.gone{opacity:0;}
 
-/* ═══════════════════════
+/* ══════════════════════════════
    IMAGE VIEWER
-═══════════════════════ */
+══════════════════════════════ */
 #imgScreen{background:#000;}
+body.light #imgScreen{background:#EDE8E8;}
 .ibar{
   position:absolute;top:0;left:0;right:0;z-index:10;
   background:linear-gradient(180deg,rgba(0,0,0,.78),transparent);
   padding:calc(12px + var(--inset)) 8px 22px;
   display:flex;align-items:center;gap:8px;transition:opacity .25s;
 }
+body.light .ibar{background:linear-gradient(180deg,rgba(240,232,232,.9),transparent);}
 .ibar.hidden{opacity:0;pointer-events:none;}
 .ivp{
   position:absolute;inset:0;display:flex;align-items:center;
@@ -517,42 +599,46 @@ body::before{
   font-size:11px;padding:6px 14px;border-radius:18px;
   pointer-events:none;transition:opacity .3s;white-space:nowrap;
 }
+body.light .ihint{background:rgba(255,255,255,.75);color:rgba(74,24,50,.5);}
 .ihint.gone{opacity:0;}
 
-/* ═══════════════════════
+/* ══════════════════════════════
    MODALS
-═══════════════════════ */
+══════════════════════════════ */
 .ov{
   position:fixed;inset:0;z-index:500;
   background:rgba(2,3,12,.78);backdrop-filter:blur(10px);
   display:flex;align-items:flex-end;justify-content:center;
   opacity:0;pointer-events:none;transition:opacity .2s;
 }
+body.light .ov{background:rgba(240,232,232,.6);}
 .ov.on{opacity:1;pointer-events:all;}
 .sh{
   width:100%;max-width:480px;
-  background:linear-gradient(160deg,#0C1330 0%,#080E22 100%);
+  background:var(--modal-bg);
   border-radius:24px 24px 0 0;
   border:1.5px solid var(--border);border-bottom:none;
   padding:16px 20px calc(44px + var(--binset));
   transform:translateY(100%);
-  transition:transform .28s cubic-bezier(.25,1,.5,1);
-  box-shadow:0 -8px 40px rgba(0,0,0,.7);
+  transition:transform .28s cubic-bezier(.25,1,.5,1),background .3s;
+  box-shadow:0 -8px 40px rgba(0,0,0,.4);
 }
 .ov.on .sh{transform:translateY(0);}
 .hdl{width:34px;height:4px;border-radius:2px;
   background:rgba(74,122,232,.2);margin:0 auto 17px;}
+body.light .hdl{background:rgba(123,24,50,.15);}
 .mt{font-size:17px;font-weight:700;color:var(--text2);
   margin-bottom:5px;font-family:'Cinzel',serif;letter-spacing:.3px;}
 .ms{font-size:13px;color:var(--sub);margin-bottom:15px;line-height:1.55;}
 .inp{
-  width:100%;background:rgba(4,6,15,.9);
+  width:100%;background:var(--inp-bg);
   border:1.5px solid var(--border);border-radius:13px;
   padding:13px 14px;color:var(--text2);font-size:15px;outline:none;
-  transition:border-color .2s;font-family:'Inter',sans-serif;
+  transition:border-color .2s,background .3s;font-family:'Inter',sans-serif;
   user-select:text;-webkit-user-select:text;
 }
 .inp:focus{border-color:rgba(74,122,232,.55);}
+body.light .inp:focus{border-color:rgba(123,24,50,.5);}
 .inp::placeholder{color:var(--hint);}
 .lbl{
   font-size:10px;font-weight:700;color:var(--sub);
@@ -566,7 +652,9 @@ body::before{
   display:flex;align-items:center;justify-content:center;
   transition:all .1s;
 }
+body.light .ico{background:rgba(255,255,255,.9);border-color:rgba(123,24,50,.12);}
 .ico.sel{border-color:var(--accent);background:rgba(74,122,232,.18);}
+body.light .ico.sel{background:rgba(123,24,50,.1);}
 .ico:active{transform:scale(.84);}
 .crow{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
 .col{width:27px;height:27px;border-radius:50%;border:3px solid transparent;cursor:pointer;transition:transform .1s;}
@@ -588,6 +676,7 @@ body::before{
   font-family:'Inter',sans-serif;
 }
 .bsec:active{background:rgba(74,122,232,.08);}
+body.light .bsec:active{background:rgba(123,24,50,.06);}
 .bdel{
   flex:1;padding:14px;border-radius:13px;border:none;
   background:linear-gradient(135deg,#C02840,#E84060);
@@ -596,17 +685,6 @@ body::before{
 }
 .bdel:active{opacity:.8;}
 
-/* Download info modal */
-#dlModal .sh{text-align:center;}
-.dl-icon{font-size:52px;margin-bottom:10px;}
-.dl-path{
-  background:rgba(74,122,232,.08);border:1px solid rgba(74,122,232,.2);
-  border-radius:10px;padding:12px;
-  font-size:13px;color:var(--accent);
-  font-family:monospace;margin:14px 0;line-height:1.5;
-  user-select:text;-webkit-user-select:text;
-}
-
 /* Context Menu */
 .cm{
   position:fixed;inset:0;z-index:450;
@@ -614,20 +692,23 @@ body::before{
   display:flex;align-items:flex-end;justify-content:center;
   opacity:0;pointer-events:none;transition:opacity .18s;
 }
+body.light .cm{background:rgba(240,232,232,.55);}
 .cm.on{opacity:1;pointer-events:all;}
 .cmb{
   width:100%;max-width:480px;
-  background:linear-gradient(160deg,#0C1330,#080E22);
+  background:var(--cm-bg);
   border-radius:22px 22px 0 0;padding:13px 18px calc(46px + var(--binset));
   border-top:1.5px solid var(--border);
-  transform:translateY(100%);transition:transform .24s cubic-bezier(.25,1,.5,1);
+  transform:translateY(100%);transition:transform .24s cubic-bezier(.25,1,.5,1),background .3s;
 }
 .cm.on .cmb{transform:translateY(0);}
 .mi{
   display:flex;align-items:center;gap:13px;padding:14px 0;
   border-bottom:1px solid rgba(74,122,232,.07);cursor:pointer;
   font-size:15px;font-weight:500;color:var(--text);font-family:'Inter',sans-serif;
+  transition:color .3s;
 }
+body.light .mi{border-bottom:1px solid rgba(123,24,50,.07);}
 .mi:last-child{border-bottom:none;}
 .mi.danger{color:var(--red);}
 .mii{font-size:20px;width:30px;text-align:center;}
@@ -636,11 +717,11 @@ body::before{
 #toast{
   position:fixed;bottom:85px;left:50%;
   transform:translateX(-50%) translateY(18px);
-  background:linear-gradient(135deg,rgba(12,19,48,.97),rgba(8,14,34,.97));
+  background:var(--toast-bg);
   color:var(--text);padding:10px 20px;border-radius:12px;
   font-size:13px;z-index:9000;opacity:0;transition:all .25s;
   pointer-events:none;white-space:nowrap;
-  border:1px solid var(--border);box-shadow:0 4px 24px rgba(0,0,0,.6);
+  border:1px solid var(--border);box-shadow:0 4px 24px rgba(0,0,0,.4);
   font-family:'Inter',sans-serif;
 }
 #toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
@@ -652,45 +733,6 @@ body::before{
   animation:doSpin .7s linear infinite;
 }
 @keyframes doSpin{to{transform:rotate(360deg);}}
-
-/* ── Theme Toggle (hidden – now inside settings menu) ── */
-#themeToggle{display:none;}
-
-/* ── Settings Menu Button ── */
-.tb-settings{
-  width:38px;height:38px;border-radius:50%;border:none;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-  background:rgba(74,122,232,.1);color:var(--text);font-size:20px;
-  border:1px solid var(--border);transition:transform .12s,opacity .12s;
-  font-family:sans-serif;
-}
-.tb-settings:active{transform:scale(.84);}
-
-/* ── Settings Dropdown ── */
-#settingsMenu{
-  position:fixed;top:0;right:0;left:0;bottom:0;z-index:8500;
-  display:none;
-}
-#settingsMenu.on{display:block;}
-#settingsMenuBox{
-  position:absolute;top:calc(60px + var(--inset));right:12px;
-  background:linear-gradient(160deg,#0C1330,#080E22);
-  border:1.5px solid var(--border);border-radius:16px;
-  padding:6px;min-width:180px;
-  box-shadow:0 8px 32px rgba(0,0,0,.7);
-  animation:menuPop .15s ease both;
-}
-body.light #settingsMenuBox{
-  background:linear-gradient(160deg,#FFFFFF,#F3ECE6);
-}
-@keyframes menuPop{from{opacity:0;transform:scale(.92) translateY(-6px);}to{opacity:1;transform:none;}}
-.sm-item{
-  display:flex;align-items:center;gap:10px;padding:12px 14px;
-  border-radius:11px;cursor:pointer;font-size:14px;font-weight:500;
-  color:var(--text);font-family:'Inter',sans-serif;transition:background .1s;
-}
-.sm-item:active{background:rgba(74,122,232,.12);}
-.sm-icon{font-size:18px;width:24px;text-align:center;}
 </style>
 </head>
 <body>
@@ -718,11 +760,10 @@ body.light #settingsMenuBox{
       <div class="eyebrow">Document Vault</div>
       <div class="appname">Paranchi's Documents</div>
     </div>
-    <button class="tb-settings" id="settingsBtn" title="Settings">⋮</button>
   </div>
   <div class="search-wrap">
     <div class="sbox">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#243858" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--hint)" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
       <input id="gSI" type="text" placeholder="Search all documents…" autocomplete="off">
       <button class="sclr" id="gSC">×</button>
     </div>
@@ -749,7 +790,7 @@ body.light #settingsMenuBox{
   </div>
   <div class="search-wrap">
     <div class="sbox">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#243858" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--hint)" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
       <input id="dSI" type="text" placeholder="Search in this folder…" autocomplete="off">
       <button class="sclr" id="dSC">×</button>
     </div>
@@ -769,10 +810,13 @@ body.light #settingsMenuBox{
 <!-- ═══════════ PDF VIEWER ═══════════ -->
 <div class="screen" id="pdfScreen">
   <div class="vbar">
-    <button class="tb-btn btn-back" id="pdfBack" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);color:#fff;font-size:26px;">‹</button>
+    <button class="tb-btn btn-back" id="pdfBack" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);color:var(--text2);font-size:26px;">‹</button>
     <div class="vt" id="pdfTitle">Document</div>
     <span class="v-info" id="pdfInfo"></span>
-    <button class="v-dl" id="pdfDlBtn">⬇ Save</button>
+    <button class="v-share" id="pdfShareBtn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      Share
+    </button>
   </div>
   <div id="pdfWrap">
     <div id="pdfSizer">
@@ -784,15 +828,18 @@ body.light #settingsMenuBox{
       </div>
     </div>
   </div>
-  <div id="pdfZH">Pinch to zoom anywhere · Drag when zoomed</div>
+  <div id="pdfZH">Pinch to zoom · Drag when zoomed</div>
 </div>
 
 <!-- ═══════════ IMAGE VIEWER ═══════════ -->
 <div class="screen" id="imgScreen">
   <div class="ibar" id="imgBar">
-    <button class="tb-btn btn-back" id="imgBack" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.1);color:#fff;font-size:26px;">‹</button>
-    <div class="vt" id="imgTitle" style="color:#fff">Photo</div>
-    <button class="v-dl" id="imgDlBtn">⬇ Save</button>
+    <button class="tb-btn btn-back" id="imgBack" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.1);color:var(--text2);font-size:26px;">‹</button>
+    <div class="vt" id="imgTitle" style="color:var(--text2)">Photo</div>
+    <button class="v-share" id="imgShareBtn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      Share
+    </button>
   </div>
   <div class="ivp" id="imgVp">
     <img id="vimg" src="" alt="" draggable="false">
@@ -847,21 +894,6 @@ body.light #settingsMenuBox{
   </div>
 </div>
 
-<!-- Download Info Modal -->
-<div class="ov" id="dlModal">
-  <div class="sh">
-    <div class="hdl"></div>
-    <div class="dl-icon">⬇️</div>
-    <div class="mt">File Saved!</div>
-    <div class="ms">Your file has been saved to:</div>
-    <div class="dl-path" id="dlPath">Android/My Documents/filename.pdf</div>
-    <div class="ms" style="font-size:12px;margin-bottom:0">Open your File Manager → Downloads → paranchi's documents → find the file → tap Share → choose WhatsApp, Gmail etc.</div>
-    <div class="brow" style="margin-top:14px">
-      <button class="bpri" id="dlOk">Got it ✓</button>
-    </div>
-  </div>
-</div>
-
 <!-- Folder Context Menu -->
 <div class="cm" id="fCM">
   <div class="cmb">
@@ -871,24 +903,49 @@ body.light #settingsMenuBox{
   </div>
 </div>
 
-<!-- Settings Menu -->
-<div id="settingsMenu">
-  <div id="settingsMenuBox">
-    <div class="sm-item" id="smTheme">
-      <span class="sm-icon" id="smThemeIcon">🌙</span>
-      <span id="smThemeLabel">Switch to Light</span>
-    </div>
+<!-- Theme Toggle Button -->
+<button id="themeToggle" title="Toggle theme" aria-label="Toggle dark/light theme">
+  <div class="theme-icon-wrap">
+    <div class="ti-dark">🌙</div>
+    <div class="ti-light">☀️</div>
   </div>
-</div>
+</button>
 
 <input type="file" id="filePick" accept=".pdf,.jpg,.jpeg,.png" style="display:none">
-<button id="themeToggle" title="Toggle theme">🌙</button>
 <div id="toast"></div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
 'use strict';
+
+/* ═══════════════════════════════
+   THEME SYSTEM
+═══════════════════════════════ */
+const THEME_KEY='paranchi_theme';
+
+function applyTheme(theme){
+  if(theme==='light'){
+    document.body.classList.add('light');
+    document.getElementById('themeColorMeta').content='#F5F0F0';
+  }else{
+    document.body.classList.remove('light');
+    document.getElementById('themeColorMeta').content='#04060F';
+  }
+  try{localStorage.setItem(THEME_KEY,theme);}catch(e){}
+}
+
+// Load saved theme — default is dark
+(function(){
+  let saved='dark';
+  try{saved=localStorage.getItem(THEME_KEY)||'dark';}catch(e){}
+  applyTheme(saved);
+})();
+
+document.getElementById('themeToggle').addEventListener('click',()=>{
+  const isDark=!document.body.classList.contains('light');
+  applyTheme(isDark?'light':'dark');
+});
 
 /* ═══════════════════════════════
    PDF.JS
@@ -905,8 +962,13 @@ try{
 /* ═══════════════════════════════
    CONSTANTS
 ═══════════════════════════════ */
-const ICONS=['🗂️','🪪','📄','🖼️','💳','🎓','🏥','🏦','📋','📜','🔖','✈️','🏠','👶','💼','🎫','🔐','🪙','📑','🎒',
-  '👴','👨','👩','👧','👦','👦🏽','👧🏽','👨‍👩‍👧','👨‍👩‍👦','👨‍👩‍👧‍👦','👵','🧓','👩‍🦳','👨‍🦳','🧒','👶🏽','🫂','❤️‍🔥','🏡','🧸'];
+// Icons including family/people emojis
+const ICONS=[
+  '🗂️','🪪','📄','🖼️','💳','🎓','🏥','🏦','📋','📜',
+  '🔖','✈️','🏠','👶','💼','🎫','🔐','🪙','📑','🎒',
+  '👴','👨','👪','👦','👧','👩','👵','🧓','🧑','🧒',
+  '👨‍👩‍👦','👨‍👩‍👧','👨‍👧','👩‍👦','👫','👬','👭','🤰','🧑‍🤝‍🧑','🫂'
+];
 const COLORS=['#3A5AAE','#AE2848','#1A7842','#8A4800','#6634AE','#0E5888','#746000','#882448'];
 const DEFAULTS=[
   {name:'Aadhaar Card',icon:'🪪',ci:0},
@@ -923,14 +985,15 @@ let DB=null;
 let allFolders=[],curFolId=null,curFolDocs=[];
 let pendFile=null,toDel=null,curDocId=null,curBlobUrl=null;
 let editFolId=null,selIcon=0,selColor=0,menuFol=null;
-let curDocForDl=null;
+let curDocForShare=null;
 let exitCnt=0,exitTmr=null;
 let globalSearchActive=false;
 let folderSearchActive=false;
 
 /* PDF */
 let pdfDoc=null,pdfScale=1,pdfNatW=0,pdfNatH=0;
-let pdfPinch=false,pdfPD=0,pdfPS=1,pdfPMX=0,pdfPMY=0,pdfPSL=0,pdfPST=0;
+let pdfPinch=false,pdfPD=0,pdfPS=1;
+let pdfMidX=0,pdfMidY=0; // midpoint in wrap coords at pinch start
 let pdfRendering=false;
 
 /* Image */
@@ -1048,70 +1111,69 @@ function toast(m,dur=3000){
 }
 
 /* ═══════════════════════════════
-   DOWNLOAD FILE
-   Works in Chrome AND Kodular WebView
-   Saves to Android/My Documents
+   SHARE FILE (Android Share Sheet)
+   Works in Kodular WebView + Android 15+
 ═══════════════════════════════ */
-function uint8ToBase64(u8){
-  let bin='';
-  const len=u8.byteLength;
-  for(let i=0;i<len;i++)bin+=String.fromCharCode(u8[i]);
-  return btoa(bin);
-}
-
-function downloadFile(doc){
+async function shareFile(doc){
   try{
     const data=safeCopy(doc.fileData);
     const m=mimeOf(doc.ext);
     const fn=safeName(doc.name)+'.'+doc.ext;
-    const folder="paranchi's documents";
-    const displayPath=`Downloads/${folder}/${fn}`;
+    const blob=new Blob([data],{type:m});
 
-    /* ── Method 1: Kodular Android interface ── */
-    if(window.Android && typeof window.Android.downloadFile==='function'){
-      try{
-        const b64=uint8ToBase64(data);
-        /* Pass subfolder as part of filename so Kodular saves there */
-        window.Android.downloadFile(b64,fn,m);
-        document.getElementById('dlPath').textContent=displayPath;
-        openM('dlModal');
+    // Try Web Share API with file (Android 10+, Chrome 89+)
+    if(navigator.canShare&&navigator.share){
+      const file=new File([blob],fn,{type:m});
+      if(navigator.canShare({files:[file]})){
+        await navigator.share({
+          files:[file],
+          title:doc.name,
+        });
         return;
-      }catch(ae){/* fall through */}
+      }
     }
 
-    /* ── Method 2: Standard blob download (Chrome / WebView) ── */
-    try{
-      const blob=new Blob([data],{type:m});
+    // Fallback: Try basic share with URL (some WebViews)
+    if(navigator.share){
+      // Create a blob URL and try to share it
       const url=URL.createObjectURL(blob);
-      const a=document.createElement('a');
-      a.href=url;
-      /* Use folder/filename so browser creates the subfolder */
-      a.download=folder+'/'+fn;
-      document.body.appendChild(a);a.click();
-      document.body.removeChild(a);
-      setTimeout(()=>URL.revokeObjectURL(url),10000);
-      document.getElementById('dlPath').textContent=displayPath;
-      openM('dlModal');
-      return;
-    }catch(be){/* fall through */}
+      try{
+        await navigator.share({
+          title:doc.name,
+          text:'Sharing: '+doc.name,
+          url:url,
+        });
+        setTimeout(()=>URL.revokeObjectURL(url),30000);
+        return;
+      }catch(e){
+        URL.revokeObjectURL(url);
+        if(e.name==='AbortError')return; // User cancelled
+      }
+    }
 
-    /* ── Method 3: base64 data URI fallback for WebView ── */
-    const b64=uint8ToBase64(data);
-    const dataUri='data:'+m+';base64,'+b64;
-    const a=document.createElement('a');
-    a.href=dataUri;
-    a.download=folder+'/'+fn;
-    document.body.appendChild(a);a.click();
-    document.body.removeChild(a);
-    document.getElementById('dlPath').textContent=displayPath;
-    openM('dlModal');
+    // Fallback: try Kodular's Android bridge if available
+    if(window.Android&&window.Android.shareFile){
+      // Convert to base64 for Kodular bridge
+      const reader=new FileReader();
+      reader.onload=()=>{
+        const b64=reader.result.split(',')[1];
+        window.Android.shareFile(b64,fn,m);
+      };
+      reader.readAsDataURL(blob);
+      return;
+    }
+
+    // Last fallback: create object URL and open (triggers download/share in some browsers)
+    const url=URL.createObjectURL(blob);
+    window.open(url,'_blank');
+    setTimeout(()=>URL.revokeObjectURL(url),30000);
+    toast('📤 Opening file…');
 
   }catch(e){
-    toast('⚠️ Could not save file — try opening in Chrome');
+    if(e.name==='AbortError')return; // User cancelled share sheet — normal
+    toast('⚠️ Could not share file');
   }
 }
-
-document.getElementById('dlOk').addEventListener('click',()=>closeM('dlModal'));
 
 /* ═══════════════════════════════
    THUMBNAILS
@@ -1228,15 +1290,19 @@ function renderDocs(docs){
     const th=doc.thumb
       ?`<img src="${doc.thumb}" loading="lazy" alt="${esc(doc.name)}">`
       :`<div class="pph"><div class="pph-i">${doc.ext==='pdf'?'📄':'🖼️'}</div><div class="pph-t">${doc.ext.toUpperCase()}</div></div>`;
+    // Share icon SVG
+    const shareIconColor=doc.ext==='pdf'?'#FF8A9B':'#8AADFF';
     c.innerHTML=`
       <div class="ct">${th}
         <span class="tb-badge tb-${doc.ext}">${doc.ext.toUpperCase()}</span>
-        <button class="dl-btn" aria-label="Save">
+        <button class="sh-btn" aria-label="Share">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
-            stroke="${doc.ext==='pdf'?'#FF8A9B':'#8AADFF'}" stroke-width="2.5">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-            <polyline points="7 10 12 15 17 10"/>
-            <line x1="12" y1="15" x2="12" y2="3"/>
+            stroke="${shareIconColor}" stroke-width="2.5">
+            <circle cx="18" cy="5" r="3"/>
+            <circle cx="6" cy="12" r="3"/>
+            <circle cx="18" cy="19" r="3"/>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
           </svg>
         </button>
       </div>
@@ -1256,13 +1322,13 @@ function renderDocs(docs){
     c.addEventListener('touchend',()=>clearTimeout(lp));
     c.addEventListener('touchmove',()=>clearTimeout(lp));
     c.addEventListener('click',e=>{
-      if(e.target.closest('.dl-btn'))return;
+      if(e.target.closest('.sh-btn'))return;
       clearTimeout(lp);openDoc(doc);
     });
-    c.querySelector('.dl-btn').addEventListener('click',async e=>{
+    c.querySelector('.sh-btn').addEventListener('click',async e=>{
       e.stopPropagation();
       const d=await dbGet('documents',doc.id);
-      if(d)downloadFile(d);
+      if(d)shareFile(d);
     });
     g.appendChild(c);
   });
@@ -1337,26 +1403,31 @@ function openDoc(doc){curDocId=doc.id;doc.ext==='pdf'?viewPDF(doc):viewImg(doc);
 
 /* ═══════════════════════════════
    PDF VIEWER
-   - Renders at HD quality
-   - Pages rendered one by one (no freeze on large PDFs)
-   - Smooth pinch zoom toward finger position
+   - HD quality rendering
+   - Pinch-zoom centered on finger position (fixed)
+   - Smooth drag when zoomed
 ═══════════════════════════════ */
 const pdfWrap=document.getElementById('pdfWrap');
 const pdfSizer=document.getElementById('pdfSizer');
 const pdfPages=document.getElementById('pdfPages');
 
-function setPdfScale(){
+function setPdfScale(newScale, anchorX, anchorY){
+  // anchorX, anchorY = point in CONTENT space that should stay fixed
+  // (already computed by caller)
+  const oldScale=pdfScale;
+  pdfScale=newScale;
+
+  // Update the visual transform
   pdfPages.style.transform=`scale(${pdfScale})`;
   pdfSizer.style.width=(pdfNatW*pdfScale)+'px';
   pdfSizer.style.height=(pdfNatH*pdfScale)+'px';
 }
 
 async function viewPDF(doc){
-  if(pdfRendering)return; // Prevent rapid double-open crash
+  if(pdfRendering)return;
   document.getElementById('pdfTitle').textContent=doc.name;
   document.getElementById('pdfInfo').textContent='';
 
-  // ★ Destroy old PDF properly first
   if(pdfDoc){
     try{await pdfDoc.destroy();}catch(e){}
     pdfDoc=null;
@@ -1369,7 +1440,7 @@ async function viewPDF(doc){
 
   const ld=document.createElement('div');
   ld.id='pdfLoader';
-  ld.style.cssText='display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px 20px;gap:14px;color:#555;font-size:14px;';
+  ld.style.cssText='display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px 20px;gap:14px;color:var(--hint);font-size:14px;';
   ld.innerHTML='<div class="spin"></div><span>Loading PDF…</span>';
   pdfPages.appendChild(ld);
   goScreen('pdfScreen');
@@ -1385,8 +1456,6 @@ async function viewPDF(doc){
 
   pdfRendering=true;
   try{
-    // ★ KEY FIX: Always copy data before passing to PDF.js
-    // PDF.js transfers the ArrayBuffer — copy prevents detach error on reopen
     const copy=safeCopy(doc.fileData);
     pdfDoc=await pdfjsLib.getDocument({
       data:copy,
@@ -1399,13 +1468,11 @@ async function viewPDF(doc){
     pdfPages.innerHTML='';
 
     const DPR=Math.min(window.devicePixelRatio||2,2.5);
-    // HD quality: render at 2.5x for sharp text when zoomed
     const QUALITY=1.8;
     const viewW=pdfWrap.clientWidth||window.innerWidth;
 
-    // Render pages one at a time — prevents freeze on large PDFs
     for(let i=1;i<=total;i++){
-      if(!pdfDoc)break; // Stopped (user went back)
+      if(!pdfDoc)break;
       const page=await pdfDoc.getPage(i);
       const vp0=page.getViewport({scale:1});
       const sc=(viewW/vp0.width)*DPR*QUALITY;
@@ -1417,14 +1484,9 @@ async function viewPDF(doc){
       cv.style.height=(vp.height/(DPR*QUALITY))+'px';
       pdfPages.appendChild(cv);
       await page.render({canvasContext:cv.getContext('2d'),viewport:vp}).promise;
-      // After first page show progress
-      if(i===1&&total>1){
-        document.getElementById('pdfInfo').textContent=`1/${total} pages`;
-      }
       if(total>1){
         document.getElementById('pdfInfo').textContent=`${i}/${total} pages`;
       }
-      // Yield to UI after each page to keep scrolling smooth
       await new Promise(r=>setTimeout(r,0));
     }
 
@@ -1441,84 +1503,76 @@ async function viewPDF(doc){
   }
 }
 
-/* PDF pinch zoom — zooms toward exact finger position, works on all sides */
+/* ─────────────────────────────────────────────────────────
+   PDF PINCH ZOOM — true center-of-fingers zoom
+   Strategy: use CSS scale(pdfScale) on pdfPages
+   - pdfSizer expands to match logical size
+   - We adjust scrollLeft/scrollTop so the pinch midpoint
+     stays visually fixed on screen
+───────────────────────────────────────────────────────── */
 pdfWrap.addEventListener('touchstart',e=>{
   if(e.touches.length===2){
+    e.preventDefault();
     pdfPinch=true;
-    pdfPD=Math.hypot(e.touches[1].clientX-e.touches[0].clientX,e.touches[1].clientY-e.touches[0].clientY);
+    pdfPD=Math.hypot(
+      e.touches[1].clientX-e.touches[0].clientX,
+      e.touches[1].clientY-e.touches[0].clientY
+    );
     pdfPS=pdfScale;
-    /* Midpoint relative to the pdfWrap viewport */
+
+    // Midpoint in SCREEN coords (relative to pdfWrap)
     const r=pdfWrap.getBoundingClientRect();
-    pdfPMX=((e.touches[0].clientX+e.touches[1].clientX)/2)-r.left;
-    pdfPMY=((e.touches[0].clientY+e.touches[1].clientY)/2)-r.top;
-    /* Scroll offsets at pinch start */
-    pdfPSL=pdfWrap.scrollLeft;
-    pdfPST=pdfWrap.scrollTop;
+    const screenMidX=(e.touches[0].clientX+e.touches[1].clientX)/2 - r.left;
+    const screenMidY=(e.touches[0].clientY+e.touches[1].clientY)/2 - r.top;
+
+    // Convert to CONTENT coords (divide by current scale)
+    // These are the coords inside pdfPages at scale=1
+    pdfMidX=(pdfWrap.scrollLeft+screenMidX)/pdfPS;
+    pdfMidY=(pdfWrap.scrollTop+screenMidY)/pdfPS;
   }
-},{passive:true});
+},{passive:false});
 
 pdfWrap.addEventListener('touchmove',e=>{
   if(!pdfPinch||e.touches.length<2)return;
   e.preventDefault();
-  const d=Math.hypot(e.touches[1].clientX-e.touches[0].clientX,e.touches[1].clientY-e.touches[0].clientY);
-  const ns=Math.max(.5,Math.min(6,pdfPS*(d/pdfPD)));
 
-  /*
-   * transform-origin is "top center" so the origin X = pdfNatW/2 * oldScale
-   * We must account for that horizontal centering offset.
-   *
-   * The visible content point under the pinch midpoint:
-   *   contentX = scrollLeft + midpointX  (in scaled space)
-   *   contentY = scrollTop  + midpointY  (in scaled space)
-   *
-   * After scale change, we want that same content point to stay
-   * under the midpoint, so:
-   *   newScrollLeft = contentX_inNewScale - midpointX
-   *   newScrollTop  = contentY_inNewScale - midpointY
-   *
-   * Because origin is top-center, horizontal scroll offset is:
-   *   scrollLeft positions content; scaled width = pdfNatW * scale
-   *   The centering shift = (scaledWidth - wrapWidth) / 2 when content narrower than wrap
-   *
-   * Simplest correct formula:
-   *   docPointX = (scrollLeft + midpointX) / oldScale
-   *   docPointY = (scrollTop  + midpointY) / oldScale
-   *   newScrollLeft = docPointX * newScale - midpointX
-   *   newScrollTop  = docPointY * newScale - midpointY
-   *
-   * But with top-center origin, the transform shifts content to center horizontally.
-   * We compensate by using the actual rendered left edge position.
-   */
+  const d=Math.hypot(
+    e.touches[1].clientX-e.touches[0].clientX,
+    e.touches[1].clientY-e.touches[0].clientY
+  );
+  const ns=Math.max(.5,Math.min(6,pdfPS*d/pdfPD));
 
-  const wrapW=pdfWrap.clientWidth;
-  const scaledW=pdfNatW*pdfPS;
-  /* Left edge of scaled content in scroll space */
-  const leftEdgeOld = scaledW < wrapW ? (wrapW - scaledW)/2 : 0;
+  // New midpoint on screen (relative to pdfWrap)
+  const r=pdfWrap.getBoundingClientRect();
+  const screenMidX=(e.touches[0].clientX+e.touches[1].clientX)/2 - r.left;
+  const screenMidY=(e.touches[0].clientY+e.touches[1].clientY)/2 - r.top;
 
-  /* Content coordinate under pinch midpoint */
-  const docX = (pdfPSL + pdfPMX - leftEdgeOld) / pdfPS;
-  const docY = (pdfPST + pdfPMY) / pdfPS;
+  pdfScale=ns;
+  pdfPages.style.transform=`scale(${ns})`;
+  pdfSizer.style.width=(pdfNatW*ns)+'px';
+  pdfSizer.style.height=(pdfNatH*ns)+'px';
 
-  pdfScale = ns;
-  setPdfScale();
+  // Scroll so that content point stays under finger midpoint
+  pdfWrap.scrollLeft=pdfMidX*ns - screenMidX;
+  pdfWrap.scrollTop=pdfMidY*ns - screenMidY;
 
-  const scaledWNew = pdfNatW * ns;
-  const leftEdgeNew = scaledWNew < wrapW ? (wrapW - scaledWNew)/2 : 0;
-
-  pdfWrap.scrollLeft = docX * ns + leftEdgeNew - pdfPMX;
-  pdfWrap.scrollTop  = docY * ns - pdfPMY;
 },{passive:false});
 
 pdfWrap.addEventListener('touchend',e=>{
   if(e.touches.length<2){
     pdfPinch=false;
-    if(pdfScale<1){pdfScale=1;setPdfScale();}
+    if(pdfScale<1){
+      pdfScale=1;
+      pdfPages.style.transform='scale(1)';
+      pdfSizer.style.width=pdfNatW+'px';
+      pdfSizer.style.height=pdfNatH+'px';
+    }
   }
 },{passive:true});
 
-/* PDF save button */
-document.getElementById('pdfDlBtn').addEventListener('click',async()=>{
-  if(curDocId){const d=await dbGet('documents',curDocId);if(d)downloadFile(d);}
+/* PDF share button */
+document.getElementById('pdfShareBtn').addEventListener('click',async()=>{
+  if(curDocId){const d=await dbGet('documents',curDocId);if(d)shareFile(d);}
 });
 
 /* ═══════════════════════════════
@@ -1550,8 +1604,10 @@ function clampI(){
   if(iS<=1){iX=0;iY=0;return;}
   const el=document.getElementById('vimg');
   const vpW=imgVp.clientWidth,vpH=imgVp.clientHeight;
-  const mX=Math.max(0,((el.naturalWidth||el.clientWidth)*iS-vpW)/2);
-  const mY=Math.max(0,((el.naturalHeight||el.clientHeight)*iS-vpH)/2);
+  const iW=(el.naturalWidth||el.clientWidth)*iS;
+  const iH=(el.naturalHeight||el.clientHeight)*iS;
+  const mX=Math.max(0,(iW-vpW)/2);
+  const mY=Math.max(0,(iH-vpH)/2);
   iX=Math.max(-mX,Math.min(mX,iX));
   iY=Math.max(-mY,Math.min(mY,iY));
 }
@@ -1561,6 +1617,7 @@ imgVp.addEventListener('touchstart',e=>{
   if(iT.length===2){
     iPD=Math.hypot(iT[1].clientX-iT[0].clientX,iT[1].clientY-iT[0].clientY);
     iPS=iS;iPX0=iX;iPY0=iY;
+    // Midpoint in viewport coords
     iPMX=(iT[0].clientX+iT[1].clientX)/2;
     iPMY=(iT[0].clientY+iT[1].clientY)/2;
   }
@@ -1587,11 +1644,27 @@ imgVp.addEventListener('touchmove',e=>{
   if(t.length===2&&iT.length>=2){
     const d=Math.hypot(t[1].clientX-t[0].clientX,t[1].clientY-t[0].clientY);
     const ns=Math.max(.85,Math.min(7,iPS*d/iPD));
+
+    // New midpoint
+    const curMidX=(t[0].clientX+t[1].clientX)/2;
+    const curMidY=(t[0].clientY+t[1].clientY)/2;
+
+    // Center of viewport
+    const vCX=imgVp.clientWidth/2;
+    const vCY=imgVp.clientHeight/2;
+
+    // Zoom toward pinch midpoint:
+    // The offset from viewport center to pinch point
+    const dx=iPMX-vCX;
+    const dy=iPMY-vCY;
     const ratio=ns/iPS;
-    const cx=imgVp.clientWidth/2,cy=imgVp.clientHeight/2;
-    iX=(iPMX-cx)+(iPX0-(iPMX-cx))*ratio;
-    iY=(iPMY-cy)+(iPY0-(iPMY-cy))*ratio;
-    iS=ns;clampI();applyIT();
+
+    // Scale existing offset + translate for finger pan
+    iX=(iPX0-dx)*ratio + dx + (curMidX-iPMX);
+    iY=(iPY0-dy)*ratio + dy + (curMidY-iPMY);
+    iS=ns;
+    clampI();applyIT();
+
   }else if(t.length===1&&iDrag&&iS>1.05){
     iX+=t[0].clientX-iDLX;iY+=t[0].clientY-iDLY;
     iDLX=t[0].clientX;iDLY=t[0].clientY;
@@ -1606,9 +1679,9 @@ imgVp.addEventListener('touchend',e=>{
 },{passive:true});
 imgVp.addEventListener('click',()=>document.getElementById('imgBar').classList.toggle('hidden'));
 
-/* Image save button */
-document.getElementById('imgDlBtn').addEventListener('click',async()=>{
-  if(curDocId){const d=await dbGet('documents',curDocId);if(d)downloadFile(d);}
+/* Image share button */
+document.getElementById('imgShareBtn').addEventListener('click',async()=>{
+  if(curDocId){const d=await dbGet('documents',curDocId);if(d)shareFile(d);}
 });
 
 /* ═══════════════════════════════
@@ -1745,14 +1818,12 @@ document.getElementById('fCM').addEventListener('click',e=>{
 });
 document.querySelectorAll('.ov').forEach(ov=>ov.addEventListener('click',e=>{if(e.target===ov)closeM(ov.id);}));
 
-/* ═══════════════════════════════
-   BACK NAVIGATION
-   PDF → folder
-   Folder → home
-   Home + global search active → clear search
-   Home → double press to exit
-   Folder + folder search active → clear search
-═══════════════════════════════ */
+/* ══════════════════════════════════
+   IN-HTML BACK BUTTON NAVIGATION
+   (No device back button needed)
+   folderBack, pdfBack, imgBack buttons in topbar handle navigation.
+   The function below also handles any hardware/browser back events.
+══════════════════════════════════ */
 function closePdfViewer(){
   if(pdfDoc){try{pdfDoc.destroy();}catch(e){}pdfDoc=null;}
   pdfRendering=false;pdfScale=1;
@@ -1770,72 +1841,11 @@ document.getElementById('folderBack').addEventListener('click',()=>{curFolId=nul
 document.getElementById('pdfBack').addEventListener('click',()=>{closePdfViewer();goScreen('folderScreen');});
 document.getElementById('imgBack').addEventListener('click',()=>{closeImgViewer();goScreen('folderScreen');});
 
-history.pushState(null,'');
-window.addEventListener('popstate',()=>{
-  // 1. Close any open modal
-  const ov=document.querySelector('.ov.on');
-  if(ov){closeM(ov.id);history.pushState(null,'');return;}
-  const cm=document.querySelector('.cm.on');
-  if(cm){cm.classList.remove('on');history.pushState(null,'');return;}
-
-  const cur=document.querySelector('.screen.active');
-  if(!cur){history.pushState(null,'');return;}
-
-  // 2. PDF viewer → folder
-  if(cur.id==='pdfScreen'){
-    closePdfViewer();goScreen('folderScreen');
-    history.pushState(null,'');return;
-  }
-  // 3. Image viewer → folder
-  if(cur.id==='imgScreen'){
-    closeImgViewer();goScreen('folderScreen');
-    history.pushState(null,'');return;
-  }
-  // 4. Folder screen
-  if(cur.id==='folderScreen'){
-    // If folder search is active → clear search first
-    if(folderSearchActive){
-      document.getElementById('dSI').value='';
-      document.getElementById('dSC').classList.remove('on');
-      folderSearchActive=false;
-      renderDocs(curFolDocs);
-      history.pushState(null,'');return;
-    }
-    // Else go home
-    curFolId=null;goScreen('homeScreen');
-    history.pushState(null,'');return;
-  }
-  // 5. Home screen
-  if(cur.id==='homeScreen'){
-    // If global search active → clear it
-    if(globalSearchActive){
-      document.getElementById('gSI').value='';
-      document.getElementById('gSC').classList.remove('on');
-      document.getElementById('gResults').classList.remove('on');
-      document.getElementById('gResults').innerHTML='';
-      document.getElementById('folderSection').style.display='';
-      globalSearchActive=false;
-      history.pushState(null,'');return;
-    }
-    // Double press to exit
-    exitCnt++;
-    if(exitCnt>=2){
-      exitCnt=0;clearTimeout(exitTmr);
-      try{window.close();}catch(e){}
-    }else{
-      toast('Press back again to exit');
-      clearTimeout(exitTmr);
-      exitTmr=setTimeout(()=>{exitCnt=0;},2500);
-    }
-    history.pushState(null,'');
-  }
-});
-
+/* ══════════════════════════════════
+   PREVENT multi-touch page zoom
+══════════════════════════════════ */
 document.addEventListener('touchmove',e=>{
-  /* Only block global multi-touch outside of PDF/image viewers */
-  const pdfActive=document.getElementById('pdfScreen').classList.contains('active');
-  const imgActive=document.getElementById('imgScreen').classList.contains('active');
-  if(!pdfActive&&!imgActive&&e.touches.length>1)e.preventDefault();
+  if(e.touches.length>1)e.preventDefault();
 },{passive:false});
 
 /* ═══════════════════════════════
@@ -1856,111 +1866,18 @@ async function init(){
     console.error(err);
     toast('⚠️ Please use Chrome browser');
   }
-  // Hide splash after 3.5 seconds (matches animation)
   setTimeout(()=>{
     const sp=document.getElementById('splash');
     sp.classList.add('hiding');
     setTimeout(()=>{if(sp.parentNode)sp.remove();},900);
   },3500);
 }
-/* ═══════════════════════════════
-   SETTINGS MENU & THEME TOGGLE
-═══════════════════════════════ */
-(function(){
-  const btn=document.getElementById('themeToggle'); // hidden legacy
-  const smBtn=document.getElementById('settingsBtn');
-  const menu=document.getElementById('settingsMenu');
-  const smTheme=document.getElementById('smTheme');
-  const smIcon=document.getElementById('smThemeIcon');
-  const smLabel=document.getElementById('smThemeLabel');
-
-  function updateLabel(){
-    const isLight=document.body.classList.contains('light');
-    smIcon.textContent=isLight?'🌙':'☀️';
-    smLabel.textContent=isLight?'Switch to Dark':'Switch to Light';
-    if(btn)btn.textContent=isLight?'☀️':'🌙';
-  }
-
-  const saved=localStorage.getItem('paranchi-theme')||'dark';
-  if(saved==='light') document.body.classList.add('light');
-  updateLabel();
-
-  smBtn.addEventListener('click',e=>{
-    e.stopPropagation();
-    menu.classList.toggle('on');
-  });
-
-  /* Close menu when tapping outside */
-  menu.addEventListener('click',e=>{
-    if(e.target===menu) menu.classList.remove('on');
-  });
-
-  smTheme.addEventListener('click',()=>{
-    const isLight=document.body.classList.toggle('light');
-    localStorage.setItem('paranchi-theme',isLight?'light':'dark');
-    updateLabel();
-    menu.classList.remove('on');
-  });
-})();
-
-/* ═══════════════════════════════
-   KODULAR BACK BUTTON BRIDGE
-   Call window.androidBack() from
-   Kodular's WebView BackPressed block
-═══════════════════════════════ */
-window.androidBack=function(){
-  /* 1. Close any open modal overlay */
-  const ov=document.querySelector('.ov.on');
-  if(ov){closeM(ov.id);return;}
-  const cm=document.querySelector('.cm.on');
-  if(cm){cm.classList.remove('on');return;}
-
-  const cur=document.querySelector('.screen.active');
-  if(!cur)return;
-
-  /* 2. PDF → folder */
-  if(cur.id==='pdfScreen'){closePdfViewer();goScreen('folderScreen');return;}
-  /* 3. Image → folder */
-  if(cur.id==='imgScreen'){closeImgViewer();goScreen('folderScreen');return;}
-  /* 4. Folder screen */
-  if(cur.id==='folderScreen'){
-    if(folderSearchActive){
-      document.getElementById('dSI').value='';
-      document.getElementById('dSC').classList.remove('on');
-      folderSearchActive=false;renderDocs(curFolDocs);return;
-    }
-    curFolId=null;goScreen('homeScreen');return;
-  }
-  /* 5. Home screen */
-  if(cur.id==='homeScreen'){
-    if(globalSearchActive){
-      document.getElementById('gSI').value='';
-      document.getElementById('gSC').classList.remove('on');
-      document.getElementById('gResults').classList.remove('on');
-      document.getElementById('gResults').innerHTML='';
-      document.getElementById('folderSection').style.display='';
-      globalSearchActive=false;return;
-    }
-    exitCnt++;
-    if(exitCnt>=2){
-      exitCnt=0;clearTimeout(exitTmr);
-      /* Tell Kodular to close the app */
-      if(window.Android&&typeof window.Android.closeApp==='function')window.Android.closeApp();
-      else try{window.close();}catch(e){}
-    }else{
-      toast('Press back again to exit');
-      clearTimeout(exitTmr);
-      exitTmr=setTimeout(()=>{exitCnt=0;},2500);
-    }
-  }
-};
-
 init();
 
 /* ── Service Worker for offline ── */
 if('serviceWorker' in navigator){
   const sw=`
-    const C='paranchi-v6';
+    const C='paranchi-v7';
     const PRE=[
       'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js',
       'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js',
